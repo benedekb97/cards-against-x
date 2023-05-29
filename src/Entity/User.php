@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enum\Role;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
 use App\Entity\Traits\TimestampableTrait;
@@ -41,6 +42,9 @@ class User implements UserInterface
 
     #[Column(type: Types::BOOLEAN)]
     private bool $activated = true; // TODO: Set up emailing to enable activation.
+
+    #[Column(type: Types::JSON)]
+    private array $roles = [Role::ROLE_USER->value];
 
     public function getName(): ?string
     {
@@ -114,7 +118,7 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return [];
+        return $this->roles;
     }
 
     public function eraseCredentials()
