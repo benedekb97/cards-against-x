@@ -7,12 +7,13 @@ namespace App\Entity;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
 use App\Entity\Traits\TimestampableTrait;
+use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
-#[Entity]
+#[Entity(repositoryClass: UserRepository::class)]
 #[HasLifecycleCallbacks]
 class User implements UserInterface
 {
@@ -109,5 +110,19 @@ class User implements UserInterface
     public function setActivated(bool $activated): void
     {
         $this->activated = $activated;
+    }
+
+    public function getRoles(): array
+    {
+        return [];
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

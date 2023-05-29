@@ -1,0 +1,10 @@
+knpu_oauth2_client:
+    clients:
+        auth_sch_oauth:
+            type: generic
+            provider_class: App\Security\OAuth\AuthSchProvider
+
+            client_id: '%env(AUTH_SCH_CLIENT_ID)%'
+            client_secret: '%env(AUTH_SCH_CLIENT_SECRET)%'
+            redirect_route: auth_sch_check
+            redirect_params: {}
