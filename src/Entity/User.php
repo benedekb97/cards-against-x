@@ -13,9 +13,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[Entity(repositoryClass: UserRepository::class)]
 #[HasLifecycleCallbacks]
+#[UniqueEntity('email', message: 'User already exists with this email address!')]
 class User implements UserInterface
 {
     use ResourceTrait;
@@ -23,9 +27,13 @@ class User implements UserInterface
     use DeletableTrait;
 
     #[Column(type: Types::STRING, nullable: true)]
+    #[NotBlank]
+    #[NotNull]
     private ?string $name = null;
 
     #[Column(type: Types::STRING, nullable: true)]
+    #[NotBlank]
+    #[NotNull]
     private ?string $email = null;
 
     #[Column(type: Types::STRING, nullable: true)]
@@ -38,6 +46,8 @@ class User implements UserInterface
     private ?string $nickname = null;
 
     #[Column(type: Types::STRING, nullable: true)]
+    #[NotBlank]
+    #[NotNull]
     private ?string $password = null;
 
     #[Column(type: Types::BOOLEAN)]

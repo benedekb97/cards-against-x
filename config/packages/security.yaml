@@ -22,8 +22,16 @@ security:
             provider: app_user_provider
             stateless: false
 
+            entry_point: form_login
+
             logout:
                 path: app_logout
+
+            form_login:
+                check_path: app_login
+                login_path: app_login
+                username_parameter: 'login[email]'
+                password_parameter: 'login[password]'
 
             custom_authenticators:
                 - App\Security\OAuth\AuthSchAuthenticator

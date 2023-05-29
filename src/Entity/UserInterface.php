@@ -7,9 +7,15 @@ namespace App\Entity;
 use App\Entity\Traits\DeletableInterface;
 use App\Entity\Traits\ResourceInterface;
 use App\Entity\Traits\TimestampableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
-interface UserInterface extends ResourceInterface, TimestampableInterface, DeletableInterface, SymfonyUserInterface
+interface UserInterface extends
+    ResourceInterface,
+    TimestampableInterface,
+    DeletableInterface,
+    SymfonyUserInterface,
+    PasswordAuthenticatedUserInterface
 {
     public function getName(): ?string;
 

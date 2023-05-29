@@ -17,3 +17,9 @@ $(document).ready(
         $('[data-toggle="popover"]').popover();
     }
 )
+
+$('.login-back-button').click(
+    function () {
+        history.back();
+    }
+)
