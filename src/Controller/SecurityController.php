@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\LoginType;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,13 +41,13 @@ class SecurityController extends AbstractController
         return new RedirectResponse('/');
     }
 
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/logout', name: 'logout')]
     public function logout(): RedirectResponse
     {
         return new RedirectResponse('/');
     }
 
-    #[Route('/login', name: 'app_login')]
+    #[Route('/login', name: 'login')]
     public function login(UrlGeneratorInterface $urlGenerator): Response
     {
         if ($this->security->getUser() !== null) {

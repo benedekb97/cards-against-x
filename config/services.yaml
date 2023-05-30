@@ -19,6 +19,23 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Security/FormLogin/FormLoginAuthenticator.php'
+
+    App\Security\FormLogin\FormLoginAuthenticator:
+        autowire: false
+        arguments:
+            $failureHandler: '@App\Security\FormLogin\Handlers\FailureHandler'
+            $successHandler: '@App\Security\FormLogin\Handlers\SuccessHandler'
+            $httpUtils: '@security.http_utils'
+            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            $userProvider: '@security.user.provider.concrete.app_user_provider'
+            $options:
+                check_path: login
+                login_path: login
+                username_parameter: 'login[email]'
+                password_parameter: 'login[password]'
+
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cards Against X{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="d-grid gap-2 col-md-4">
+            <a href="{{ path('help') }}" class="btn btn-block btn-lg btn-secondary" style="cursor:help">Help</a>
+        </div>
+        {% if not is_granted('ROLE_USER') %}
+            <div class="d-grid gap-2 col-md-4">
+                <a href="{{ path('login') }}" class="btn btn-lg btn-primary">Log in</a>
+            </div>
+            <div class="d-grid gap-2 col-md-4">
+                <a href="{{ path('register') }}" class="btn btn-lg btn-success">Register</a>
+            </div>
+        {% else %}
+            <div class="d-grid gap-2 col-md-4">
+                <a href="{{ path('logout') }}" class="btn btn-lg btn-danger">Log out</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

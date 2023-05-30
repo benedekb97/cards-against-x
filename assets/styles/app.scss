@@ -1,1 +1,22 @@
+$body-bg: black;
+$body-color: white;
+
 @import "~bootstrap/scss/bootstrap";
+
+h1.page-header{
+  text-shadow:0 0 10px white;
+  font-size:30pt;
+  margin-top:10px;
+  padding-top:0;
+  color:white;
+  margin-bottom:50px;
+}
+
+h1.page-header a{
+  text-decoration: none;
+  color: white;
+}
+
+a {
+  text-decoration:none;
+}

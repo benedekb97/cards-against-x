@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
         private readonly Security $security
     ) {}
 
-    #[Route('register/', name: 'app_register')]
+    #[Route('register/', name: 'register')]
     public function index(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
