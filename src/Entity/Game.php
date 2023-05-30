@@ -9,6 +9,7 @@ use App\Entity\Traits\CreatedByUserTrait;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
 use App\Entity\Traits\TimestampableTrait;
+use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 
-#[Entity]
+#[Entity(repositoryClass: GameRepository::class)]
 #[HasLifecycleCallbacks]
 class Game implements GameInterface
 {
@@ -29,11 +30,11 @@ class Game implements GameInterface
     use CreatedByUserTrait;
 
     public function __construct(
-        #[Column(type: Types::STRING)]
+        #[Column(type: Types::STRING, unique: true)]
         private ?string $slug = null,
 
         #[Column(type: Types::INTEGER)]
-        private ?int $numberOfRounds = null,
+        private int $numberOfRounds = self::DEFAULT_ROUND_COUNT,
 
         #[Column(type: Types::STRING, enumType: GameStatus::class)]
         private GameStatus $status = GameStatus::LOBBY,
@@ -48,13 +49,13 @@ class Game implements GameInterface
         private bool $spectatable = false,
 
         #[OneToMany(mappedBy: 'game', targetEntity: Message::class)]
-        private readonly Collection $messages = new ArrayCollection(),
+        private Collection $messages = new ArrayCollection(),
 
         #[OneToMany(mappedBy: 'game', targetEntity: Player::class)]
-        private readonly Collection $players = new ArrayCollection(),
+        private Collection $players = new ArrayCollection(),
 
         #[OneToMany(mappedBy: 'game', targetEntity: Round::class)]
-        private readonly Collection $rounds = new ArrayCollection()
+        private Collection $rounds = new ArrayCollection()
     ) {}
 
     public function getSlug(): ?string

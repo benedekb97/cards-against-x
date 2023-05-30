@@ -13,6 +13,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\OneToOne;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -55,6 +56,9 @@ class User implements UserInterface
 
     #[Column(type: Types::JSON)]
     private array $roles = [Role::ROLE_USER->value];
+
+    #[OneToOne(targetEntity: Player::class)]
+    private ?PlayerInterface $player = null;
 
     public function getName(): ?string
     {
@@ -138,5 +142,19 @@ class User implements UserInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+    public function getPlayer(): ?PlayerInterface
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?PlayerInterface $player): void
+    {
+        $this->player = $player;
+    }
+
+    public function hasPlayer(): bool
+    {
+        return isset($this->player);
     }
 }

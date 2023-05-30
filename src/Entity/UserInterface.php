@@ -44,4 +44,10 @@ interface UserInterface extends
     public function isActivated(): bool;
 
     public function setActivated(bool $activated): void;
+
+    public function getPlayer(): ?PlayerInterface;
+
+    public function setPlayer(?PlayerInterface $player): void;
+
+    public function hasPlayer(): bool;
 }

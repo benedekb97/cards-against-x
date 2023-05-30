@@ -9,4 +9,5 @@ enum GameStatus: string
     case LOBBY = 'lobby';
     case IN_PROGRESS = 'in_progress';
     case FINISHED = 'finished';
+    case CANCELED = 'canceled';
 }

@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface GameInterface extends ResourceInterface, TimestampableInterface, DeletableInterface, CreatedByUserInterface
 {
+    public const DEFAULT_ROUND_COUNT = 3;
+
     public function getSlug(): ?string;
 
     public function setSlug(?string $slug): void;

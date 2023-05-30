@@ -38,7 +38,7 @@ class Player implements PlayerInterface
         private bool $voted = false,
 
         #[ManyToMany(targetEntity: Card::class)]
-        private readonly Collection $cards = new ArrayCollection()
+        private Collection $cards = new ArrayCollection()
     ) {}
 
     public function isReady(): bool
