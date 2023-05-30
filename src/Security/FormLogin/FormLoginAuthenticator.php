@@ -43,7 +43,11 @@ class FormLoginAuthenticator extends SymfonyFormLoginAuthenticator implements Au
 
         $user = $passport->getUser();
 
-        if ($user instanceof UserInterface && $user->getInternalId() !== null) {
+        if (
+            $user instanceof UserInterface &&
+            $user->getInternalId() !== null &&
+            $user->getPassword() === null
+        ) {
             throw new UserLoggedInWithOauthException();
         }
 

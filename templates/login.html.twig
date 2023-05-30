@@ -6,15 +6,22 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             {{ form_start(loginForm) }}
-                {{ form_widget(loginForm) }}
+            {{ form_widget(loginForm) }}
 
-                <div class="d-grid gap-2 mb-4">
-                    <button type="submit" class="btn btn-primary">Log in</button>
+            {% if error is not null %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
-                <div class="d-grid gap-2 mb-5">
-                    <a href="{{ path('auth_sch_redirect') }}" class="btn btn-primary">Log in with AuthSCH</a>
-                    <button type="button" class="btn login-back-button btn-secondary">Back</button>
-                </div>
+            {% endif %}
+
+            <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+            <div class="d-grid gap-2 mb-5">
+                <a href="{{ path('auth_sch_redirect') }}" class="btn btn-primary">Log in with AuthSCH</a>
+                <button type="button" class="btn login-back-button btn-secondary">Back</button>
+            </div>
             {{ form_end(loginForm) }}
         </div>
     </div>
