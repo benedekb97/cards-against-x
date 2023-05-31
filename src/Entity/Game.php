@@ -195,4 +195,11 @@ class Game implements GameInterface
             $round->setGame(null);
         }
     }
+
+    public function isReadyToStart(): bool
+    {
+        return $this->status === GameStatus::LOBBY &&
+            $this->players->filter(static fn (PlayerInterface $player) => !$player->isReady())->isEmpty() &&
+            $this->players->count() > 1;
+    }
 }

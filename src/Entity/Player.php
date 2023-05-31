@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[Entity]
 #[HasLifecycleCallbacks]
@@ -95,5 +96,12 @@ class Player implements PlayerInterface
         if ($this->hasCard($card)) {
             $this->cards->removeElement($card);
         }
+    }
+
+    #[Groups(['lobbyUpdate'])]
+    #[SerializedName('host')]
+    public function isHost(): bool
+    {
+        return $this->user === $this->game->getCreatedBy();
     }
 }

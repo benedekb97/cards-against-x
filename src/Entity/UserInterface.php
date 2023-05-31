@@ -50,4 +50,6 @@ interface UserInterface extends
     public function setPlayer(?PlayerInterface $player): void;
 
     public function hasPlayer(): bool;
+
+    public function isGameCreator(): bool;
 }

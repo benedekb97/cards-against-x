@@ -62,4 +62,6 @@ interface GameInterface extends ResourceInterface, TimestampableInterface, Delet
     public function addRound(RoundInterface $round): void;
 
     public function removeRound(RoundInterface $round): void;
+
+    public function isReadyToStart(): bool;
 }

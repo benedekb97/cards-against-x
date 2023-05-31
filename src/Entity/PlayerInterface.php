@@ -37,4 +37,6 @@ interface PlayerInterface extends
     public function addCard(CardInterface $card): void;
 
     public function removeCard(CardInterface $card): void;
+
+    public function isHost(): bool;
 }

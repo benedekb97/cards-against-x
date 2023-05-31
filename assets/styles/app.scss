@@ -1,7 +1,10 @@
 $body-bg: black;
 $body-color: white;
 
+$card-bg: lighten($body-bg, 10%);
+
 @import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-icons/font/bootstrap-icons";
 
 h1.page-header{
   text-shadow:0 0 10px white;
@@ -19,4 +22,30 @@ h1.page-header a{
 
 a {
   text-decoration:none;
+}
+
+.input-group-text {
+  background: lighten($body-bg, 10%);
+}
+
+.toast {
+  background-color: lighten($body-bg, 20%);
+  color: darken($body-color, 10%);
+}
+
+.form-select:disabled {
+  background-color:lighten($form-select-bg, 20%);
+}
+
+.form-control:disabled {
+  background-color:lighten($input-bg, 20%);
+}
+
+$table-bg: lighten($body-bg, 10%);
+$table-striped-bg: lighten($body-bg, 30%);
+
+$table-border-color: rgba(255,255,255, 0.5);
+
+table, tr {
+  border-color: $table-border-color;
 }

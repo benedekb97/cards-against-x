@@ -4,14 +4,98 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-4 d-grid gap-2">
-            <a href="{{ path('leave') }}" class="btn btn-secondary btn-lg">Leave</a>
+        <div class="col-md-3">
+            <a href="{{ path('leave') }}" class="btn btn-secondary btn-lg w-100">Leave</a>
         </div>
-        <div class="col-md-8">
-
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="form-floating mb-3">
+                        <input placeholder="Invite link" data-bs-placement="top" data-bs-toggle="tooltip" title="Click to copy!" readonly type="text" class="form-control" id="game-slug" value="{{ url('join', {slug: game.getSlug}) }}">
+                        <label for="game-slug" class="form-label">Invite link</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    Lobby for {{ game.getSlug }}
+    <div class="row">
+        <div class="col-md-4 d-grid gap-2">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Game setup</span>
+                </div>
+                <div class="card-body">
+                    <div class="form-floating mb-3">
+                        <input {% if not isCreator %} readonly disabled {% endif %} placeholder="Rounds" data-bs-toggle="tooltip" class="form-control" data-bs-placement="top" value="{{ game.getNumberOfRounds }}" min="1" max="10" type="number" id="number-of-rounds">
+                        <label for="number-of-rounds" class="form-label">Rounds</label>
+                    </div>
+                    <div class="mb-3 form-floating">
+                        <select class="form-select" id="deck" {% if not isCreator %} readonly disabled {% endif %}>
+                            <option selected disabled>Choose one!</option>
+                            {% for deck in decks %}
+                                <option id="deck-{{ deck.getId }}" value="{{ deck.getId }}" {% if game.getDeck is same as(deck) %} selected {% endif %}>{{ deck.getName }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="deck" class="form-label">Deck</label>
+                    </div>
+                </div>
+            </div>
+            {% if player.isReady %}
+                <button type="button" id="ready-button" class="btn btn-secondary">Not ready</button>
+            {% else %}
+                <button type="button" id="ready-button" class="btn btn-primary">Ready</button>
+            {% endif %}
+            <button
+                type="button"
+                id="start-button"
+                {% if game.isReadyToStart %}
+                    class="btn btn-primary"
+                {% else %}
+                    class="btn btn-secondary"
+                    disabled
+                {% endif %}
+                {% if not player.isHost %}
+                    style="display:none;"
+                {% endif %}
+            >
+                Start
+            </button>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Players</span>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped" id="players-table">
+                        {% for gamePlayer in game.getPlayers %}
+                            <tr id="player-{{ gamePlayer.getId }}">
+                                <td>
+                                    {{ gamePlayer.getUser.getNickname ?? gamePlayer.getUser.getName }}
+                                    {% if gamePlayer.isHost %}
+                                        <i class="bi-star" data-bs-toggle="tooltip" data-bs-placement="top" title="Host"></i>
+                                    {% endif %}
+                                    {% if gamePlayer.isReady %}
+                                        <i class="bi-check"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="copy-toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body">
+                Link copied!
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="update-lobby-route" value="{{ url('update-lobby', {slug: game.getSlug}) }}" />
+    <input type="hidden" id="ready-route" value="{{ url('ready') }}" />
+    <input type="hidden" id="player-id" value="{{ player.getId }}" />
 {% endblock %}
 
 {% block javascripts %}
@@ -23,4 +107,6 @@
         )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
     </script>
     {{ encore_entry_script_tags('app') }}
+    <script type="application/javascript">
+    </script>
 {% endblock %}

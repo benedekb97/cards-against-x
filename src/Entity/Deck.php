@@ -8,6 +8,7 @@ use App\Entity\Traits\CreatedByUserTrait;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
 use App\Entity\Traits\TimestampableTrait;
+use App\Repository\DeckRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 
-#[Entity]
+#[Entity(repositoryClass: DeckRepository::class)]
 #[HasLifecycleCallbacks]
 class Deck implements DeckInterface
 {

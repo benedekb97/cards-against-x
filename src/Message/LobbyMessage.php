@@ -17,7 +17,9 @@ class LobbyMessage extends AbstractMessage
         private readonly ?int $deckId,
         /** @var array|UserInterface[] $users */
         #[Groups(['lobbyUpdate'])]
-        private readonly array $users
+        private readonly array $users,
+        #[Groups(['lobbyUpdate'])]
+        private readonly bool $readyToStart
     )
     {
         parent::__construct($url);
@@ -36,5 +38,10 @@ class LobbyMessage extends AbstractMessage
     public function getUsers(): array
     {
         return $this->users;
+    }
+
+    public function isReadyToStart(): bool
+    {
+        return $this->readyToStart;
     }
 }

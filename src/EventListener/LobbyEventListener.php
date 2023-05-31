@@ -36,14 +36,14 @@ readonly class LobbyEventListener
                 {
                     return $player->getUser();
                 }
-            )->toArray()
+            )->toArray(),
+            $game->isReadyToStart()
         );
 
         $this->hub->publish(
             new Update(
                 'http://localhost' . $url,
-                $this->serializer->serialize($lobbyUpdateMessage, 'json', ['groups' => ['lobbyUpdate']]),
-                true
+                $this->serializer->serialize($lobbyUpdateMessage, 'json', ['groups' => ['lobbyUpdate']])
             )
         );
     }

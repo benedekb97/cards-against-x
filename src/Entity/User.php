@@ -161,4 +161,9 @@ class User implements UserInterface
     {
         return isset($this->player);
     }
+
+    public function isGameCreator(): bool
+    {
+        return $this->player?->getGame()?->getCreatedBy() === $this;
+    }
 }
