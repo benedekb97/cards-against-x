@@ -37,7 +37,7 @@ class Turn implements TurnInterface
         private ?PlayInterface $winningPlay = null,
 
         #[OneToMany(mappedBy: 'turn', targetEntity: Play::class)]
-        private readonly Collection $plays = new ArrayCollection()
+        private Collection $plays = new ArrayCollection()
     ) {}
 
     public function getPlayer(): ?PlayerInterface

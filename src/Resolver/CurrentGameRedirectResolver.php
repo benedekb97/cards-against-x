@@ -28,5 +28,15 @@ readonly class CurrentGameRedirectResolver implements CurrentGameRedirectResolve
                 $this->urlGenerator->generate('lobby', ['slug' => $user->getPlayer()->getGame()->getSlug()])
             );
         }
+
+        if ($user->getPlayer()->getGame()->getStatus() === GameStatus::IN_PROGRESS) {
+            return new RedirectResponse(
+                $this->urlGenerator->generate('game', ['slug' => $user->getPlayer()->getGame()->getSlug()])
+            );
+        }
+
+        return new RedirectResponse(
+            $this->urlGenerator->generate('index')
+        );
     }
 }

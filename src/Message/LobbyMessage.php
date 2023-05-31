@@ -19,7 +19,9 @@ class LobbyMessage extends AbstractMessage
         #[Groups(['lobbyUpdate'])]
         private readonly array $users,
         #[Groups(['lobbyUpdate'])]
-        private readonly bool $readyToStart
+        private readonly bool $readyToStart,
+        #[Groups(['lobbyUpdate'])]
+        private readonly string $status
     )
     {
         parent::__construct($url);
@@ -43,5 +45,10 @@ class LobbyMessage extends AbstractMessage
     public function isReadyToStart(): bool
     {
         return $this->readyToStart;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 }

@@ -21,7 +21,7 @@ class HomeController extends AbstractController
             'index.html.twig',
             [
                 'user' => $user,
-                'game' => $user->getPlayer()?->getGame(),
+                'game' => $user?->getPlayer()?->getGame(),
             ]
         );
     }

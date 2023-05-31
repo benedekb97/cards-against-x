@@ -20,6 +20,10 @@ interface DeckInterface extends ResourceInterface, CreatedByUserInterface, Times
 
     public function setPublic(bool $public): void;
 
+    public function getWhiteCards(): Collection;
+
+    public function getBlackCards(): Collection;
+
     public function getCards(): Collection;
 
     public function hasCard(CardInterface $card): bool;

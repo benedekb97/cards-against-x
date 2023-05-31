@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Checker\UserHostEligibilityCheckerInterface;
 use App\Checker\UserJoinActionCheckerInterface;
 use App\Checker\UserLeaveActionCheckerInterface;
+use App\Checker\UserStartActionCheckerInterface;
 use App\Checker\UserUpdateLobbyActionCheckerInterface;
 use App\Entity\Enum\Role;
 use App\Entity\UserInterface;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +40,8 @@ class GameController extends AbstractController
         private readonly UserJoinActionCheckerInterface $userJoinActionChecker,
         private readonly DeckRepositoryInterface $deckRepository,
         private readonly UserUpdateLobbyActionCheckerInterface $updateLobbyActionChecker,
-        private readonly LobbyUpdateHandlerInterface $lobbyUpdateHandler
+        private readonly LobbyUpdateHandlerInterface $lobbyUpdateHandler,
+        private readonly UserStartActionCheckerInterface $userStartActionChecker
     ) {}
 
     #[Route('/create', name: 'create')]
@@ -138,5 +141,54 @@ class GameController extends AbstractController
         }
 
         return $this->gameService->joinGame($user, $game);
+    }
+
+    #[Route('/rejoin', name: 'rejoin')]
+    #[IsGranted(Role::ROLE_USER->value)]
+    public function rejoin(): RedirectResponse
+    {
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
+        return $this->currentGameRedirectResolver->resolve($user);
+    }
+
+    #[Route('/start', name: 'start')]
+    #[IsGranted(Role::ROLE_USER->value)]
+    public function start(): Response
+    {
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
+        if (!$this->userStartActionChecker->check($user)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        return $this->gameService->startGame($user->getPlayer()->getGame());
+    }
+
+    #[Route('/game/{slug}', name: 'game')]
+    #[IsGranted(Role::ROLE_USER->value)]
+    public function game(string $slug): Response
+    {
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
+        $game = $this->gameRepository->findOneBySlug($slug);
+
+        if ($game === null) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($user->getPlayer()?->getGame() !== $game) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->render(
+            'game/game.html.twig',
+            [
+                'game' => $game,
+            ]
+        );
     }
 }

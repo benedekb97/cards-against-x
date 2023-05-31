@@ -51,10 +51,10 @@ class Game implements GameInterface
         #[OneToMany(mappedBy: 'game', targetEntity: Message::class)]
         private Collection $messages = new ArrayCollection(),
 
-        #[OneToMany(mappedBy: 'game', targetEntity: Player::class, fetch: 'EAGER')]
+        #[OneToMany(mappedBy: 'game', targetEntity: Player::class, cascade: ['persist'], fetch: 'EAGER')]
         private Collection $players = new ArrayCollection(),
 
-        #[OneToMany(mappedBy: 'game', targetEntity: Round::class)]
+        #[OneToMany(mappedBy: 'game', targetEntity: Round::class, cascade: ['persist'])]
         private Collection $rounds = new ArrayCollection()
     ) {}
 
@@ -200,6 +200,7 @@ class Game implements GameInterface
     {
         return $this->status === GameStatus::LOBBY &&
             $this->players->filter(static fn (PlayerInterface $player) => !$player->isReady())->isEmpty() &&
-            $this->players->count() > 1;
+            $this->players->count() > 1 &&
+            $this->deck !== null;
     }
 }

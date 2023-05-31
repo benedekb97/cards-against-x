@@ -61,6 +61,12 @@ es.onmessage = e => {
 const playerId = parseInt($('#player-id').val());
 
 const lobbyFunction = function (data) {
+    if (data.status === 'in_progress') {
+        window.location = $('#game-url').val()
+
+        return;
+    }
+
     $('#number-of-rounds').val(data.numberOfRounds);
     $('#deck').val(data.deckId);
 

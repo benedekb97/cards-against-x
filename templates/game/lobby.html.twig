@@ -46,8 +46,7 @@
             {% else %}
                 <button type="button" id="ready-button" class="btn btn-primary">Ready</button>
             {% endif %}
-            <button
-                type="button"
+            <a
                 id="start-button"
                 {% if game.isReadyToStart %}
                     class="btn btn-primary"
@@ -58,9 +57,10 @@
                 {% if not player.isHost %}
                     style="display:none;"
                 {% endif %}
+                href="{{ url('start') }}"
             >
                 Start
-            </button>
+            </a>
         </div>
         <div class="col-md-8">
             <div class="card">
@@ -97,6 +97,7 @@
     <input type="hidden" id="update-lobby-route" value="{{ url('update-lobby', {slug: game.getSlug}) }}" />
     <input type="hidden" id="ready-route" value="{{ url('ready') }}" />
     <input type="hidden" id="player-id" value="{{ player.getId }}" />
+    <input type="hidden" id="game-url" value="{{ url('game', {slug: game.getSlug}) }}" />
 {% endblock %}
 
 {% block javascripts %}

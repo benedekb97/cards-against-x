@@ -37,7 +37,8 @@ readonly class LobbyEventListener
                     return $player->getUser();
                 }
             )->toArray(),
-            $game->isReadyToStart()
+            $game->isReadyToStart(),
+            $game->getStatus()->value
         );
 
         $this->hub->publish(

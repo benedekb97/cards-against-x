@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enum\CardType;
 use App\Entity\Traits\CreatedByUserTrait;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
@@ -58,6 +59,26 @@ class Deck implements DeckInterface
     public function setPublic(bool $public): void
     {
         $this->public = $public;
+    }
+
+    public function getWhiteCards(): Collection
+    {
+        return $this->cards->filter(
+            static function (CardInterface $card): bool
+            {
+                return $card->getType() === CardType::WHITE;
+            }
+        );
+    }
+
+    public function getBlackCards(): Collection
+    {
+        return $this->cards->filter(
+            static function (CardInterface $card): bool
+            {
+                return $card->getType() === CardType::BLACK;
+            }
+        );
     }
 
     public function getCards(): Collection

@@ -15,4 +15,6 @@ interface GameServiceInterface
     public function leaveGame(UserInterface $user): RedirectResponse;
 
     public function joinGame(UserInterface $user, GameInterface $game): RedirectResponse;
+
+    public function startGame(GameInterface $game): RedirectResponse;
 }
