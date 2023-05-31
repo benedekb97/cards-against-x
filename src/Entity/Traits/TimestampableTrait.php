@@ -34,6 +34,7 @@ trait TimestampableTrait
     }
 
     #[PreUpdate]
+    #[Ignore]
     public function setUpdatedAtNow(): void
     {
         $this->updatedAt = new \DateTime();

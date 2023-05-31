@@ -7,10 +7,12 @@ namespace App\Service;
 use App\Entity\Enum\GameStatus;
 use App\Entity\GameInterface;
 use App\Entity\UserInterface;
+use App\Event\LobbyUpdateEvent;
 use App\Factory\GameFactoryInterface;
 use App\Factory\PlayerFactoryInterface;
 use App\Generator\GameSlugGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -21,7 +23,8 @@ readonly class GameService implements GameServiceInterface
         private PlayerFactoryInterface $playerFactory,
         private EntityManagerInterface $entityManager,
         private GameSlugGeneratorInterface $gameSlugGenerator,
-        private UrlGeneratorInterface $urlGenerator
+        private UrlGeneratorInterface $urlGenerator,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     public function createGame(UserInterface $user): RedirectResponse
@@ -58,6 +61,8 @@ readonly class GameService implements GameServiceInterface
 
         $user->getPlayer()->delete();
 
+        $game->removePlayer($player);
+
         $user->setPlayer(null);
 
         $this->entityManager->persist($user);
@@ -65,6 +70,8 @@ readonly class GameService implements GameServiceInterface
         $this->entityManager->persist($game);
 
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(new LobbyUpdateEvent($game));
 
         return new RedirectResponse(
             $this->urlGenerator->generate('index')
@@ -81,6 +88,8 @@ readonly class GameService implements GameServiceInterface
         $this->entityManager->persist($user);
 
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(new LobbyUpdateEvent($game));
 
         return new RedirectResponse(
             $this->urlGenerator->generate('lobby', ['slug' => $game->getSlug()])

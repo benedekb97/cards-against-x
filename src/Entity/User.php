@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\OneToOne;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -30,6 +31,7 @@ class User implements UserInterface
     #[Column(type: Types::STRING, nullable: true)]
     #[NotBlank]
     #[NotNull]
+    #[Groups(['lobbyUpdate'])]
     private ?string $name = null;
 
     #[Column(type: Types::STRING, nullable: true)]
@@ -44,6 +46,7 @@ class User implements UserInterface
     private ?string $rememberToken = null;
 
     #[Column(type: Types::STRING, nullable: true)]
+    #[Groups(['lobbyUpdate'])]
     private ?string $nickname = null;
 
     #[Column(type: Types::STRING, nullable: true)]
@@ -57,7 +60,8 @@ class User implements UserInterface
     #[Column(type: Types::JSON)]
     private array $roles = [Role::ROLE_USER->value];
 
-    #[OneToOne(targetEntity: Player::class)]
+    #[OneToOne(targetEntity: Player::class, fetch: 'EAGER')]
+    #[Groups(['lobbyUpdate'])]
     private ?PlayerInterface $player = null;
 
     public function getName(): ?string

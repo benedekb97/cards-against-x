@@ -13,3 +13,14 @@
     </div>
     Lobby for {{ game.getSlug }}
 {% endblock %}
+
+{% block javascripts %}
+    <script type="application/json" id="mercure-url">
+        {{ mercure('http://localhost' ~ path('lobby', {slug: game.getSlug}),
+            {
+                subscribe: 'http://localhost' ~ path('lobby', {slug: game.getSlug})
+            }
+        )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+    </script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

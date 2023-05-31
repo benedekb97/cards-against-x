@@ -51,7 +51,7 @@ class Game implements GameInterface
         #[OneToMany(mappedBy: 'game', targetEntity: Message::class)]
         private Collection $messages = new ArrayCollection(),
 
-        #[OneToMany(mappedBy: 'game', targetEntity: Player::class)]
+        #[OneToMany(mappedBy: 'game', targetEntity: Player::class, fetch: 'EAGER')]
         private Collection $players = new ArrayCollection(),
 
         #[OneToMany(mappedBy: 'game', targetEntity: Round::class)]

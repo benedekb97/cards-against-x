@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
 #[HasLifecycleCallbacks]
@@ -29,6 +30,7 @@ class Player implements PlayerInterface
 
     public function __construct(
         #[Column(type: Types::BOOLEAN)]
+        #[Groups(['lobbyUpdate'])]
         private bool $ready = false,
 
         #[Column(type: Types::INTEGER)]

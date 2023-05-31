@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 
 trait HasUserTrait
 {
-    #[ManyToOne(targetEntity: User::class)]
+    #[ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
     private ?UserInterface $user = null;
 
     public function getUser(): ?UserInterface

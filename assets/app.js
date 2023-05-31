@@ -28,3 +28,36 @@ $('.login-back-button').click(
         history.back();
     }
 )
+
+const u = JSON.parse(document.getElementById('mercure-url').textContent);
+
+const es = new EventSource(
+    u,
+    {
+        withCredentials: true
+    }
+);
+
+es.onmessage = e => {
+    const data = JSON.parse(e.data);
+
+    const url = data.url;
+
+    if (url.includes('lobby')) {
+        lobbyFunction(data);
+
+        return;
+    }
+
+    if (url.includes('game')) {
+        gameFunction(data);
+    }
+}
+
+const lobbyFunction = function (data) {
+    console.log(data);
+}
+
+const gameFunction = function (data) {
+
+}
