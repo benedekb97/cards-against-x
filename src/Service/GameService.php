@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\Enum\GameStatus;
 use App\Entity\GameInterface;
+use App\Entity\PlayerInterface;
 use App\Entity\UserInterface;
 use App\Event\LobbyUpdateEvent;
 use App\Factory\GameFactoryInterface;
@@ -60,6 +61,17 @@ readonly class GameService implements GameServiceInterface
         }
 
         $user->getPlayer()->delete();
+
+        if ($player->isHost() && $game->getPlayers()->count() > 1) {
+            /** @var PlayerInterface $newHost */
+            $newHost = $game->getPlayers()->filter(
+                static function (PlayerInterface $gamePlayer) use ($player) {
+                    return $gamePlayer !== $player;
+                }
+            )->first();
+
+            $game->setCreatedBy($newHost->getUser());
+        }
 
         $game->removePlayer($player);
 

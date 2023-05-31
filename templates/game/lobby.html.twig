@@ -36,6 +36,7 @@
                                 <option id="deck-{{ deck.getId }}" value="{{ deck.getId }}" {% if game.getDeck is same as(deck) %} selected {% endif %}>{{ deck.getName }}</option>
                             {% endfor %}
                         </select>
+                        {# TODO: update select options on host change! #}
                         <label for="deck" class="form-label">Deck</label>
                     </div>
                 </div>

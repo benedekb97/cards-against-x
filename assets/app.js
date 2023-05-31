@@ -61,9 +61,6 @@ es.onmessage = e => {
 const playerId = parseInt($('#player-id').val());
 
 const lobbyFunction = function (data) {
-    const readyCheck = `&nbsp;<i class="bi-check"></i>`;
-    const hostStar = `&nbsp;<i class="bi-star"></i>`;
-
     $('#number-of-rounds').val(data.numberOfRounds);
     $('#deck').val(data.deckId);
 
@@ -73,34 +70,49 @@ const lobbyFunction = function (data) {
         $('#start-button').removeClass('btn-primary').addClass('btn-secondary').attr('disabled', 'disabled');
     }
 
-    data.users.forEach(
-        function (user) {
-            const player = user.player;
+    let html = '<tbody>';
 
-            let playerRow = `<td>${user.nickname ?? user.name}`;
-
-            if (player.host) {
-                playerRow += hostStar;
-
-                if (player.id === playerId) {
-                    $('#deck').removeAttr('disabled').removeAttr('readonly');
-                    $('#number-of-rounds').removeAttr('disabled').removeAttr('readonly');
-
-                    $('#start-button').css('display', 'block');
-                } else {
-                    $('#start-button').css('display', 'none');
-                }
-            }
-
-            if (player.ready) {
-                playerRow += readyCheck;
-            }
-
-            playerRow += `</td>`;
-
-            $(`#player-${player.id}`).html(playerRow);
+    if (!Array.isArray(data.users)) {
+        html += handleUserList(data.users[1]);
+    } else {
+        for (const user of data.users) {
+            html += handleUserList(user);
         }
-    )
+    }
+
+    html += '</tbody>';
+
+    $('#players-table').html(html);
+}
+
+const handleUserList = function (user) {
+    const readyCheck = `&nbsp;<i class="bi-check"></i>`;
+    const hostStar = `&nbsp;<i class="bi-star"></i>`;
+
+    const player = user.player;
+
+    let playerRow = `<tr id="player-${player.id}"><td>${user.nickname ?? user.name}`;
+
+    if (player.host) {
+        playerRow += hostStar;
+
+        if (player.id === playerId) {
+            $('#deck').removeAttr('disabled').removeAttr('readonly');
+            $('#number-of-rounds').removeAttr('disabled').removeAttr('readonly');
+
+            $('#start-button').css('display', 'inherit');
+        } else {
+            $('#start-button').css('display', 'none');
+        }
+    }
+
+    if (player.ready) {
+        playerRow += readyCheck;
+    }
+
+    playerRow += `</td></tr>`;
+
+    return playerRow;
 }
 
 const gameFunction = function (data) {
