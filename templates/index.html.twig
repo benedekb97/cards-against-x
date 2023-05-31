@@ -18,6 +18,15 @@
             <div class="d-grid gap-2 col-md-4">
                 <a href="{{ path('logout') }}" class="btn btn-lg btn-danger">Log out</a>
             </div>
+            {% if game is not null %}
+                <div class="d-grid gap-2 col-md-4">
+                    <a href="{{ path('lobby', {slug: game.getSlug}) }}" class="btn btn-lg btn-primary">Rejoin game</a>
+                </div>
+            {% else %}
+                <div class="d-grid gap-2 col-md-4">
+                    <a href="{{ path('create') }}"  class="btn btn-lg btn-primary">Create lobby</a>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}
