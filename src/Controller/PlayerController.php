@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Enum\GameStatus;
 use App\Entity\UserInterface;
+use App\Event\GameUpdateEvent;
 use App\Event\LobbyUpdateEvent;
+use App\Event\TurnEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,7 +41,19 @@ class PlayerController extends AbstractController
 
         $entityManager->persist($user);
 
-        $eventDispatcher->dispatch(new LobbyUpdateEvent($user->getPlayer()->getGame()));
+        if ($user->getPlayer()->getGame()->getStatus() === GameStatus::LOBBY) {
+            $eventDispatcher->dispatch(new LobbyUpdateEvent($user->getPlayer()->getGame()));
+        }
+
+        if ($user->getPlayer()->getGame()->getStatus() === GameStatus::IN_PROGRESS) {
+            if ($user->getPlayer()->getGame()->allPlayersReady()) {
+                $eventDispatcher->dispatch(
+                    new TurnEvent($user->getPlayer()->getGame()->getCurrentRound()->getCurrentTurn())
+                );
+            }
+
+            $eventDispatcher->dispatch(new GameUpdateEvent($user->getPlayer()->getGame()));
+        }
 
         $entityManager->flush();
 

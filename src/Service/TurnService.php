@@ -43,6 +43,8 @@ readonly class TurnService implements TurnServiceInterface
 
         $turn->setWinningPlay($play);
 
+        $play->setPoints($user->getPlayer()->getGame()->getPlayers()->count());
+
         $this->eventDispatcher->dispatch(new TurnEvent($turn));
         $this->eventDispatcher->dispatch(new GameUpdateEvent($turn->getRound()->getGame()));
 

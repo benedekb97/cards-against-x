@@ -41,4 +41,16 @@ interface PlayerInterface extends
     public function isHost(): bool;
 
     public function getName(): string;
+
+    public function hasPlayed(): bool;
+
+    public function getPlays(): Collection;
+
+    public function hasPlay(PlayInterface $play): bool;
+
+    public function addPlay(PlayInterface $play): void;
+
+    public function removePlay(PlayInterface $play): void;
+
+    public function getPoints(): int;
 }

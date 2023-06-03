@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\Enum\GameStatus;
 use App\Entity\Enum\TurnStatus;
+use App\Entity\PlayerInterface;
 use App\Entity\RoundInterface;
 use App\Entity\TurnInterface;
+use App\Event\GameUpdateEvent;
 use App\Event\RoundEvent;
 use App\Event\TurnEvent;
 use App\Service\GameCardServiceInterface;
 use App\Service\GameServiceInterface;
 use App\Service\PlayerCardServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
@@ -22,7 +26,8 @@ readonly class RoundEventListener
         private EventDispatcherInterface $eventDispatcher,
         private PlayerCardServiceInterface $playerCardService,
         private GameServiceInterface $gameService,
-        private GameCardServiceInterface $gameCardService
+        private GameCardServiceInterface $gameCardService,
+        private EntityManagerInterface $entityManager
     ) {}
 
     public function onRoundEvent(RoundEvent $event): void
@@ -34,6 +39,23 @@ readonly class RoundEventListener
 
             if ($nextTurn === null) {
                 $nextRound = $this->getNextRound($round);
+
+                if ($nextRound === null) {
+                    $round->getGame()->setStatus(GameStatus::FINISHED);
+
+                    /** @var PlayerInterface $player */
+                    foreach ($round->getGame()->getPlayers() as $player) {
+                        $player->getUser()->setPlayer(null);
+
+                        $this->entityManager->persist($player->getUser());
+                    }
+
+                    $this->entityManager->persist($round->getGame());
+
+                    $this->eventDispatcher->dispatch(new GameUpdateEvent($round->getGame()));
+
+                    return;
+                }
 
                 $round->getGame()->setCurrentRound($nextRound);
 

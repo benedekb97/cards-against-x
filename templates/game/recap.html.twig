@@ -3,9 +3,53 @@
 {% block title %}Cards Against X{% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="col-md-3">
+            {% include 'game/elements/info.html.twig' with {'showButtons': false, 'withReadyButton': not player.isReady} %}
+        </div>
+        <div class="col-md-9">
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-12">
+                    <h3 class="fs-3 text-center">Winner</h3>
+                </div>
+                <div class="col-md-3">
+                    <div class="card black-card">
+                        <div class="card-body">
+                            {{ winningPlay.getPlayHTML|raw }}
+                        </div>
+                        <div class="card-footer text-end">
+                            <i>{{ winningPlay.getPlayer.getName }}</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-12">
+                    <h3 class="fs-3 text-center">Other combinations</h3>
+                </div>
+                {% for play in plays %}
+                    {% if play is not same as(winningPlay) %}
+                        <div class="col-md-3">
+                            <div class="card black-card">
+                                <div class="card-body">
+                                    {{ play.getPlayHTML|raw }}
+                                </div>
+                                <div class="card-footer text-end">
+                                    <i>{{ play.getPlayer.getName }}</i>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
     <input type="hidden" id="time-remaining" value="{{ timeoutSeconds }}" />
     <input type="hidden" id="player-is-ready" value="{{ player.isReady }}"/>
+    <input type="hidden" id="player-id" value="{{ player.getId }}" />
     <input type="hidden" id="current-turn-status" value="recap"/>
+    <input type="hidden" id="ready-url" value="{{ url('ready') }}" />
 {% endblock %}
 
 {% block javascripts %}

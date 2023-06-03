@@ -15,7 +15,7 @@ class PlayFactory implements PlayFactoryInterface
     {
         $play = new Play();
 
-        $play->setPlayer($player);
+        $player->addPlay($play);
         $turn->addPlay($play);
 
         return $play;

@@ -17,12 +17,15 @@
                     {% endif %}
                 >
                     {{ player.getName }}
-                    {% if game.getCurrentRound.getCurrentTurn.hasPlayerPlayed(player) %}<i class="bi-check"></i>{% endif %}
-                    {% if game.getCurrentRound.getCurrentTurn.getPlayer is same as(player) %}<i class="bi-star"></i>{% endif %}
+                    {% if game.getCurrentRound.getCurrentTurn.hasPlayerPlayed(player) and game.getCurrentRound.getCurrentTurn.getStatus.value is same as('in_progress') %}<i class="bi-check"></i>{% endif %}
+                    {% if player.isReady %}<i class="bi bi-check"></i>{% endif %}
+                    {% if game.getCurrentRound.getCurrentTurn.getPlayer is same as(player) %}<i class="bi-star"></i>{% endif %}<br>
+                    <i class="fs-6">{{ player.getPoints }} points</i>
                 </li>
             {% endfor %}
         </ul>
     </div>
+    {% if showButtons is not defined %}
     <div class="card-footer">
         <div class="d-grid mb-3">
             <button type="button" class="btn btn-secondary" disabled id="submit-button">Submit</button>
@@ -31,4 +34,12 @@
             <button type="button" class="btn btn-secondary" disabled id="reset-button">Reset</button>
         </div>
     </div>
+    {% endif %}
+    {% if withReadyButton is defined and withReadyButton is same as(true) %}
+        <div class="card-footer">
+            <div class="d-grid">
+                <button type="button" class="btn btn-primary" id="recap-ready-button">Ready</button>
+            </div>
+        </div>
+    {% endif %}
 </div>

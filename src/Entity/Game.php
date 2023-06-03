@@ -204,4 +204,28 @@ class Game implements GameInterface
             $this->players->count() > 1 &&
             $this->deck !== null;
     }
+
+    public function hasUser(UserInterface $user): bool
+    {
+        return $this->players
+            ->map(
+                static function (PlayerInterface $player): UserInterface
+                {
+                    return $player->getUser();
+                }
+            )
+            ->contains($user);
+    }
+
+    public function allPlayersReady(): bool
+    {
+        /** @var PlayerInterface $player */
+        foreach ($this->players as $player) {
+            if (!$player->isReady()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

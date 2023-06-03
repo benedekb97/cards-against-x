@@ -139,4 +139,9 @@ class Play implements PlayInterface
 
         return $play;
     }
+
+    public function isWinningPlay(): bool
+    {
+        return $this->turn->getWinningPlay() === $this;
+    }
 }

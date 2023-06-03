@@ -9,6 +9,7 @@ use App\Checker\UserJoinActionCheckerInterface;
 use App\Checker\UserLeaveActionCheckerInterface;
 use App\Checker\UserStartActionCheckerInterface;
 use App\Checker\UserUpdateLobbyActionCheckerInterface;
+use App\Entity\Enum\GameStatus;
 use App\Entity\Enum\Role;
 use App\Entity\Enum\TurnStatus;
 use App\Entity\UserInterface;
@@ -175,13 +176,23 @@ class GameController extends AbstractController
         /** @var UserInterface $user */
         $user = $this->getUser();
 
-        $game = $this->gameRepository->findOneBySlug($slug);
+        $game = $this->gameRepository->findOneBySlug($slug, true);
 
         if ($game === null) {
             throw new NotFoundHttpException();
         }
 
         if ($user->getPlayer()?->getGame() !== $game) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($game->getStatus() === GameStatus::FINISHED && $game->getDeletedAt() !== null) {
+            return new RedirectResponse(
+                $this->generateUrl('game-recap', ['slug' => $game->getSlug()])
+            );
+        }
+
+        if ($game->getDeletedAt() !== null) {
             throw new NotFoundHttpException();
         }
 
@@ -225,6 +236,8 @@ class GameController extends AbstractController
                     'timeoutSeconds' => 60 - (time() - strtotime($turn->getUpdatedAt()->format('Y-m-d H:i:s'))),
                     'player' => $user->getPlayer(),
                     'game' => $game,
+                    'winningPlay' => $turn->getWinningPlay(),
+                    'plays' => $turn->getPlays(),
                 ]
             );
         }
@@ -235,5 +248,29 @@ class GameController extends AbstractController
                 'game' => $game,
             ]
         );
+    }
+
+    #[IsGranted(Role::ROLE_USER->value)]
+    #[Route('/game-recap/{slug}', name: 'game-recap')]
+    public function gameRecap(string $slug): Response
+    {
+        $game = $this->gameRepository->findOneBySlug($slug, true);
+
+        if ($game === null) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($game->getDeletedAt() === null) {
+            throw new NotFoundHttpException();
+        }
+
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
+        if (!$game->hasUser($user)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        return $this->render('game/game-recap.html.twig', ['game' => $game]);
     }
 }

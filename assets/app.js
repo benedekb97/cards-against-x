@@ -132,6 +132,26 @@ const gameFunction = function (data) {
     if (data.turnStatus !== currentTurnStatus) {
         location.reload();
     }
+
+    let allReady = true;
+
+    for (let player of data.players) {
+        let playerTag = $(`#player-${player.id}`);
+
+        if (player.ready || player.played) {
+            playerTag.css('background-color', 'rgba(255, 255, 255, 0.2').html(
+                `${player.name} <i class="bi bi-check"></i><br><i class="fs-6">${player.points} points</i>`
+            )
+        }
+
+        if (!player.ready) {
+            allReady = false;
+        }
+    }
+
+    if (allReady) {
+        location.reload();
+    }
 }
 
 
@@ -364,9 +384,18 @@ $(document).ready(function() {
         }
     )
 
-    let timeoutSeconds = parseInt($('#time-remaining').val());
-
-    if (timeoutSeconds < 0) {
-
-    }
+    $('#recap-ready-button').click(
+        function() {
+            fetch(
+                $('#ready-url').val(),
+                {
+                    method: "POST",
+                }
+            ).then(
+                function() {
+                    $(`#recap-ready-button`).removeClass('btn-primary').addClass('btn-secondary').attr('disabled', 'disabled');
+                }
+            )
+        }
+    )
 });
