@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
 use App\Entity\Traits\TimestampableTrait;
+use App\Repository\PlayRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 
-#[Entity]
+#[Entity(repositoryClass: PlayRepository::class)]
 #[HasLifecycleCallbacks]
 class Play implements PlayInterface
 {
@@ -28,7 +29,7 @@ class Play implements PlayInterface
         #[ManyToOne(targetEntity: Player::class)]
         private ?PlayerInterface $player = null,
 
-        #[ManyToOne(targetEntity: Turn::class)]
+        #[ManyToOne(targetEntity: Turn::class, inversedBy: 'plays')]
         private ?TurnInterface $turn = null,
 
         #[Column(type: Types::INTEGER, nullable: true)]
@@ -41,7 +42,7 @@ class Play implements PlayInterface
         private bool $featured = false,
 
         #[ManyToMany(targetEntity: Card::class)]
-        private readonly Collection $cards = new ArrayCollection()
+        private Collection $cards = new ArrayCollection()
     ) {}
 
     public function getPlayer(): ?PlayerInterface
@@ -116,5 +117,26 @@ class Play implements PlayInterface
         if ($this->hasCard($card)) {
             $this->cards->removeElement($card);
         }
+    }
+
+    public function getPlayHTML(): string
+    {
+        $blackText = $this->getTurn()->getCard()->getText();
+
+        $play = $blackText[0];
+
+        /**
+         * @var int $key
+         * @var CardInterface $card
+         */
+        foreach ($this->getCards() as $key => $card) {
+            $play .= sprintf(
+                ' <span class="white-text">%s</span> %s',
+                implode('', $card->getText()),
+                $blackText[$key+1]
+            );
+        }
+
+        return $play;
     }
 }

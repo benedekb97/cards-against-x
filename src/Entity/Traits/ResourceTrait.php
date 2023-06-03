@@ -15,7 +15,7 @@ trait ResourceTrait
     #[Id]
     #[GeneratedValue]
     #[Column(type: Types::BIGINT)]
-    #[Groups(['lobbyUpdate'])]
+    #[Groups(['lobbyUpdate', 'gameUpdate'])]
     private ?int $id = null;
 
     public function getId(): ?int

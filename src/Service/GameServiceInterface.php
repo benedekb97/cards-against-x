@@ -17,4 +17,6 @@ interface GameServiceInterface
     public function joinGame(UserInterface $user, GameInterface $game): RedirectResponse;
 
     public function startGame(GameInterface $game): RedirectResponse;
+
+    public function setPlayersNotReady(GameInterface $game): void;
 }

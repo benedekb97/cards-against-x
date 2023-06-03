@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity(repositoryClass: GameRepository::class)]
 #[HasLifecycleCallbacks]

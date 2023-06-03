@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 abstract class AbstractMessage implements MessageInterface
 {
     public function __construct(
-        #[Groups(['lobbyUpdate'])]
+        #[Groups(['lobbyUpdate', 'gameUpdate'])]
         private readonly string $url
     ) {}
 

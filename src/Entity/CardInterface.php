@@ -19,6 +19,8 @@ interface CardInterface extends ResourceInterface, TimestampableInterface, Delet
 
     public function getText(): ?array;
 
+    public function getFormattedText(): string;
+
     public function setText(?array $text): void;
 
     public function getDecks(): Collection;
@@ -28,4 +30,6 @@ interface CardInterface extends ResourceInterface, TimestampableInterface, Delet
     public function addDeck(DeckInterface $deck): void;
 
     public function removeDeck(DeckInterface $deck): void;
+
+    public function getBlankCount(): int;
 }

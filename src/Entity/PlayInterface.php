@@ -38,4 +38,6 @@ interface PlayInterface extends ResourceInterface, DeletableInterface, Timestamp
     public function addCard(CardInterface $card): void;
 
     public function removeCard(CardInterface $card): void;
+
+    public function getPlayHTML(): string;
 }

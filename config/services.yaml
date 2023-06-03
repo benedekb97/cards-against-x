@@ -34,6 +34,7 @@ services:
                 login_path: login
                 username_parameter: 'login[email]'
                 password_parameter: 'login[password]'
+                use_forward: false
 
 
 

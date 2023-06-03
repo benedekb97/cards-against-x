@@ -8,11 +8,13 @@ use App\Entity\CardInterface;
 use App\Entity\GameInterface;
 use App\Entity\PlayerInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 
 readonly class PlayerCardService implements PlayerCardServiceInterface
 {
     public function __construct(
-        private GameCardServiceInterface $gameCardService
+        private GameCardServiceInterface $gameCardService,
+        private EntityManagerInterface $entityManager
     ) {}
 
     public function assignCardsToPlayers(GameInterface $game): void
@@ -31,6 +33,8 @@ readonly class PlayerCardService implements PlayerCardServiceInterface
 
                 $availableCards->removeElement($card);
             }
+
+            $this->entityManager->persist($player);
         }
     }
 

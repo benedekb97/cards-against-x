@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cards Against X{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-4">
+            {% include 'game/elements/info.html.twig' %}
+        </div>
+        <div class="col-lg-8">
+            <div class="row justify-content-center">
+                <div class="col-lg-3 mb-3">
+                    <div class="card black-card">
+                        <div class="card-body">
+                            {{ game.getCurrentRound.getCurrentTurn.getCard.getFormattedText }}
+                        </div>
+                    </div>
+                </div>
+                {% for i in 1..game.getCurrentRound.getCurrentTurn.getCard.getBlankCount %}
+                    <div class="col-lg-3 mb-3">
+                        <div class="card blank-card" id="blank-card-{{ i }}" data-id="{{ i }}">
+                            <div class="card-body" id="blank-card-{{ i }}-body">
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row justify-content-center">
+                {% for card in player.getCards %}
+                    <div class="col-lg-3 mb-3">
+                        <div class="card white-card" id="white-card-{{ card.getId }}">
+                            <a class="card-link game-card-link" href="#" data-card-id="{{ card.getId }}" data-card-text="{{ card.getFormattedText }}">
+                                <div class="card-body">
+                                    {{ card.getFormattedText }}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="blank-card-count" value="{{ game.getCurrentRound.getCurrentTurn.getCard.getBlankCount }}" />
+    <input type="hidden" id="submit-url" value="{{ url('submit') }}" />
+    <input type="hidden" id="current-turn-status" value="{{ game.getCurrentRound.getCurrentTurn.getStatus.value }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/json" id="mercure-url">
+        {{ mercure('http://localhost' ~ path('game', {slug: game.getSlug}),
+            {
+                subscribe: 'http://localhost' ~ path('game', {slug: game.getSlug})
+            }
+        )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+    </script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

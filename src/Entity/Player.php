@@ -31,16 +31,18 @@ class Player implements PlayerInterface
 
     public function __construct(
         #[Column(type: Types::BOOLEAN)]
-        #[Groups(['lobbyUpdate'])]
+        #[Groups(['lobbyUpdate', 'gameUpdate'])]
         private bool $ready = false,
 
+        #[Groups(['gameUpdate'])]
         #[Column(type: Types::INTEGER)]
         private int $votes = 0,
 
+        #[Groups(['gameUpdate'])]
         #[Column(type: Types::BOOLEAN)]
         private bool $voted = false,
 
-        #[ManyToMany(targetEntity: Card::class)]
+        #[ManyToMany(targetEntity: Card::class, cascade: ['all'])]
         private Collection $cards = new ArrayCollection()
     ) {}
 
@@ -103,5 +105,10 @@ class Player implements PlayerInterface
     public function isHost(): bool
     {
         return $this->user === $this->game->getCreatedBy();
+    }
+
+    public function getName(): string
+    {
+        return $this->user->getNickname() ?? $this->user->getName() ?? '';
     }
 }

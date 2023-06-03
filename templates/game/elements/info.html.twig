@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">
+            Round: {{ game.getCurrentRound.getNumber }}/{{ game.getRounds.count }}<br>
+            Turn: {{ game.getCurrentRound.getCurrentTurn.getNumber }}/{{ game.getCurrentRound.getTurns.count }}
+        </span>
+    </div>
+    <div class="card-body" id="players">
+        <h5 class="card-title mb-3">Players</h5>
+        <ul class="list-group">
+            {% for player in game.getPlayers %}
+                <li
+                    class="list-group-item"
+                    id="player-{{ player.getId }}"
+                    {% if game.getCurrentRound.getCurrentTurn.hasPlayerPlayed(player) or game.getCurrentRound.getCurrentTurn.getPlayer is same as(player) %}
+                        style="background-color: rgba(255, 255, 255, 0.2)"
+                    {% endif %}
+                >
+                    {{ player.getName }}
+                    {% if game.getCurrentRound.getCurrentTurn.hasPlayerPlayed(player) %}<i class="bi-check"></i>{% endif %}
+                    {% if game.getCurrentRound.getCurrentTurn.getPlayer is same as(player) %}<i class="bi-star"></i>{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="card-footer">
+        <div class="d-grid mb-3">
+            <button type="button" class="btn btn-secondary" disabled id="submit-button">Submit</button>
+        </div>
+        <div class="d-grid">
+            <button type="button" class="btn btn-secondary" disabled id="reset-button">Reset</button>
+        </div>
+    </div>
+</div>

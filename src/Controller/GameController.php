@@ -10,6 +10,7 @@ use App\Checker\UserLeaveActionCheckerInterface;
 use App\Checker\UserStartActionCheckerInterface;
 use App\Checker\UserUpdateLobbyActionCheckerInterface;
 use App\Entity\Enum\Role;
+use App\Entity\Enum\TurnStatus;
 use App\Entity\UserInterface;
 use App\Handler\LobbyUpdateHandlerInterface;
 use App\Handler\UserHostIneligibilityHandler;
@@ -182,6 +183,50 @@ class GameController extends AbstractController
 
         if ($user->getPlayer()?->getGame() !== $game) {
             throw new NotFoundHttpException();
+        }
+
+        $turn = $game->getCurrentRound()->getCurrentTurn();
+
+        if ($turn->getStatus() === TurnStatus::IN_PROGRESS) {
+            if ($user->getPlayer() === $turn->getPlayer()) {
+                return $this->render(
+                    'game/host.html.twig',
+                    [
+                        'game' => $game,
+                        'player' => $user->getPlayer(),
+                    ]
+                );
+            } else {
+                return $this->render(
+                    'game/player.html.twig',
+                    [
+                        'game' => $game,
+                        'player' => $user->getPlayer(),
+                    ]
+                );
+            }
+        }
+
+        if ($turn->getStatus() === TurnStatus::CHOOSING) {
+            return $this->render(
+                'game/choose.html.twig',
+                [
+                    'plays' => $turn->getPlays(),
+                    'player' => $user->getPlayer(),
+                    'turn' => $turn,
+                ]
+            );
+        }
+
+        if ($turn->getStatus() === TurnStatus::RECAP) {
+            return $this->render(
+                'game/recap.html.twig',
+                [
+                    'timeoutSeconds' => 60 - (time() - strtotime($turn->getUpdatedAt()->format('Y-m-d H:i:s'))),
+                    'player' => $user->getPlayer(),
+                    'game' => $game,
+                ]
+            );
         }
 
         return $this->render(

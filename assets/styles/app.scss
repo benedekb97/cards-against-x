@@ -6,6 +6,11 @@ $card-bg: lighten($body-bg, 10%);
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons";
 
+.list-group-item {
+  background-color: lighten($body-bg, 20%);
+  color: darken($body-color, 10%);
+}
+
 h1.page-header{
   text-shadow:0 0 10px white;
   font-size:30pt;
@@ -48,4 +53,64 @@ $table-border-color: rgba(255,255,255, 0.5);
 
 table, tr {
   border-color: $table-border-color;
+}
+
+.card.white-card .card-body{
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 3px 3px;
+  transition: background-color 500ms;
+}
+
+.card.white-card *{
+  color:black;
+  height: 150px;
+}
+
+.card.black-card *{
+  color:white;
+  height: 150px;
+}
+
+.card.black-card .card-body {
+  border-radius: 3px 3px;
+}
+
+a.card-link {
+  text-decoration: none;
+}
+
+a.card-link .card-body:hover {
+  background-color: rgba(255,255,255,0.95);
+  transition: background-color .15s;
+}
+
+.card.blank-card .card-body{
+  background:rgba(255,255,255,0.2);
+  border-radius:3px 3px;
+  height: 150px;
+}
+
+.card.blank-card-clickable .card-body{
+  transition: background-color .3s;
+}
+
+.card.blank-card-clickable .card-body:hover {
+  cursor:pointer;
+  transition: background-color .15s;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.card.white-card.used-white-card .card-body{
+  background: rgba(255, 255, 255, 0.4) !important;
+  cursor: not-allowed;
+}
+
+.card.black-card span.white-text {
+  background-color: white;
+  color: black;
+}
+
+.card.black-card .black-card-link.black-card-link-clicked .card-body {
+  background-color:rgba(255,255,255,0.1);
 }

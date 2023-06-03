@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enum\TurnStatus;
 use App\Entity\Traits\DeletableInterface;
 use App\Entity\Traits\ResourceInterface;
 use App\Entity\Traits\TimestampableInterface;
@@ -34,4 +35,14 @@ interface TurnInterface extends ResourceInterface, DeletableInterface, Timestamp
     public function addPlay(PlayInterface $play): void;
 
     public function removePlay(PlayInterface $play): void;
+
+    public function getStatus(): TurnStatus;
+
+    public function setStatus(TurnStatus $status): void;
+
+    public function getNumber(): ?int;
+
+    public function setNumber(?int $number): void;
+
+    public function hasPlayerPlayed(PlayerInterface $player): bool;
 }

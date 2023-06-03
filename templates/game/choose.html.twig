@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cards Against X{% endblock %}
+
+{% block body %}
+    {% if player is same as(turn.getPlayer) %}
+        <div class="row justify-content-center mb-3">
+            {% for play in plays %}
+                <div class="col-md-3">
+                    <div class="card black-card">
+                        <a href="#" class="black-card-link" data-play-id="{{ play.getId }}" id="play-{{ play.getId }}">
+                            <div class="card-body">
+                                {{ play.getPlayHTML|raw }}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row mb-3 justify-content-center">
+            <div class="col-md-3 d-grid">
+                <button class="btn btn-secondary" disabled id="play-submit-button">
+                    Submit
+                </button>
+            </div>
+
+        </div>
+        <input type="hidden" id="submit-winner-url" value="{{ url('submit-winner') }}"/>
+    {% else %}
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center fs-3">
+                        The host is choosing a winner!
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <input type="hidden" id="current-turn-status" value="{{ turn.getStatus.value }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/json" id="mercure-url">
+        {{ mercure('http://localhost' ~ path('game', {slug: turn.getRound.getGame.getSlug}),
+            {
+                subscribe: 'http://localhost' ~ path('game', {slug: turn.getRound.getGame.getSlug})
+            }
+        )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+    </script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

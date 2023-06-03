@@ -52,6 +52,11 @@ class Card implements CardInterface
         return $this->text;
     }
 
+    public function getFormattedText(): string
+    {
+        return implode('_____', $this->text);
+    }
+
     public function setText(?array $text): void
     {
         $this->text = $text;
@@ -81,5 +86,14 @@ class Card implements CardInterface
             $this->decks->removeElement($deck);
             $deck->removeCard($this);
         }
+    }
+
+    public function getBlankCount(): int
+    {
+        if ($this->type === CardType::WHITE) {
+            return 0;
+        }
+
+        return count($this->text) - 1;
     }
 }
