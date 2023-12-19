@@ -8,6 +8,7 @@ use App\Entity\PlayerInterface;
 use App\Entity\UserInterface;
 use App\Event\LobbyUpdateEvent;
 use App\Message\LobbyMessage;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -18,9 +19,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 readonly class LobbyEventListener
 {
     public function __construct(
-        private HubInterface        $hub,
-        private SerializerInterface $serializer,
-        private UrlGeneratorInterface $urlGenerator
+        private HubInterface          $hub,
+        private SerializerInterface   $serializer,
+        private UrlGeneratorInterface $urlGenerator,
+        private ParameterBagInterface $parameterBag
     ) {}
 
     public function onLobbyUpdate(LobbyUpdateEvent $event): void
@@ -41,9 +43,11 @@ readonly class LobbyEventListener
             $game->getStatus()->value
         );
 
+        $host = trim($this->parameterBag->get('app.host'), DIRECTORY_SEPARATOR);
+
         $this->hub->publish(
             new Update(
-                'http://localhost' . $url,
+                $host . $url,
                 $this->serializer->serialize($lobbyUpdateMessage, 'json', ['groups' => ['lobbyUpdate']])
             )
         );

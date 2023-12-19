@@ -2,43 +2,71 @@ version: '3'
 
 services:
 ###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
+      - ./:/var/www/html
+    ports:
+      - "80:80"
+      - "3179:3179"
+    depends_on:
+      - database
+    networks:
+      - cards
+    extra_hosts:
+      - "cards.local:127.0.0.1"
+
+
+  redis:
+    image: redislabs/redisearch:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - cards
+
+  database:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cards_against_x
+      MYSQL_USER: cards_against_x
+      MYSQL_PASSWORD: cards_against_x
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    networks:
+      - cards
 
-###> symfony/mercure-bundle ###
-  mercure:
-    image: dunglas/mercure
-    restart: unless-stopped
+  pma:
+    image: phpmyadmin:latest
     environment:
-      SERVER_NAME: ':80'
-      MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
-      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
-      # Set the URL of your Symfony project (without trailing slash!) as value of the cors_origins directive
-      MERCURE_EXTRA_DIRECTIVES: |
-        cors_origins http://127.0.0.1:8000
-    # Comment the following line to disable the development mode
-    command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev
-    volumes:
-      - mercure_data:/data
-      - mercure_config:/config
-###< symfony/mercure-bundle ###
-
-volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
+      PMA_ARBITRARY: 0
+      PMA_HOST: database
+    ports:
+      - "8080:80"
+    networks:
+      - cards
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/mercure-bundle ###
-  mercure_data:
-  mercure_config:
+#  mercure:
+#    image: dunglas/mercure
+#    restart: unless-stopped
+#    environment:
+#      SERVER_NAME: ':80'
+#      MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+#      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+#      MERCURE_EXTRA_DIRECTIVES: |
+#        cors_origins http://cards.local
+#    command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev
+#    volumes:
+#      - mercure_data:/data
+#      - mercure_config:/config
+#    networks:
+#      - cards
 ###< symfony/mercure-bundle ###
+
+networks:
+  cards:
+    driver: bridge

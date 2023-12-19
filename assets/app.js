@@ -156,10 +156,12 @@ const gameFunction = function (data) {
 
 
 $('#game-slug').on('click', function(e){
-    navigator.clipboard.writeText(e.target.value);
-
-    let toastElement = document.getElementById('copy-toast');
-    let myToast = bootstrap.Toast.getOrCreateInstance(toastElement).show();
+    navigator.clipboard
+        .writeText(e.target.value)
+        .then(function() {
+            let toastElement = document.getElementById('copy-toast');
+            bootstrap.Toast.getOrCreateInstance(toastElement).show();
+        });
 });
 
 const updateLobby = function () {
