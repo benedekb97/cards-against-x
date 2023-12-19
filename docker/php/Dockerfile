@@ -12,6 +12,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN pecl install redis
 RUN pecl install memcached
 
+RUN docker-php-ext-enable redis
+
 RUN docker-php-ext-install pdo_mysql mbstring zip exif intl soap xml gd curl mysqli calendar
 
 RUN a2enmod rewrite
