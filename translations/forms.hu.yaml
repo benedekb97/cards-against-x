@@ -1,0 +1,10 @@
+login:
+  email_address: Email-cím
+  password: Jelszó
+
+register:
+  email: Email-cím
+  password:
+    first: Jelszó
+    second: Jelszó megerősítése
+  name: Teljes név

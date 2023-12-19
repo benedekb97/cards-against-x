@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\DTO\RegistrationDTO;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

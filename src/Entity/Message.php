@@ -25,6 +25,9 @@ class Message implements MessageInterface
     use TimestampableTrait;
     use HasGameTrait;
 
+    #[ManyToOne(targetEntity: Game::class, inversedBy: 'messages')]
+    private ?GameInterface $game = null;
+
     #[Column(type: Types::STRING)]
     private ?string $message = null;
 
@@ -36,5 +39,15 @@ class Message implements MessageInterface
     public function setMessage(?string $message): void
     {
         $this->message = $message;
+    }
+
+    public function getGame(): ?GameInterface
+    {
+        return $this->game;
+    }
+
+    public function setGame(?GameInterface $game): void
+    {
+        $this->game = $game;
     }
 }

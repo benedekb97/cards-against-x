@@ -20,9 +20,10 @@ class LoginType extends AbstractType
                 'email',
                 EmailType::class,
                 [
-                    'label' => 'Email address',
+                    'translation_domain' => 'forms',
+                    'label' => 'login.email_address',
                     'attr' => [
-                        'placeholder' => 'Name',
+                        'placeholder' => 'Email address',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -33,7 +34,8 @@ class LoginType extends AbstractType
                 'password',
                 PasswordType::class,
                 [
-                    'label' => 'Password',
+                    'translation_domain' => 'forms',
+                    'label' => 'login.password',
                     'attr' => [
                         'placeholder' => 'Password',
                     ],

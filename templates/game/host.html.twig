@@ -8,9 +8,9 @@
 
 {% block javascripts %}
     <script type="application/json" id="mercure-url">
-        {{ mercure('http://localhost' ~ path('game', {slug: game.getSlug}),
+        {{ mercure(app.request.getSchemeAndHttpHost() ~ path('game', {slug: game.getSlug}),
             {
-                subscribe: 'http://localhost' ~ path('game', {slug: game.getSlug})
+                subscribe: app.request.getSchemeAndHttpHost() ~ path('game', {slug: game.getSlug})
             }
         )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
     </script>

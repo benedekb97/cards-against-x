@@ -1,0 +1,44 @@
+index:
+  buttons:
+    help: Segítség
+    login: Bejelentkezés
+    register: Regisztrálás
+    logout: Kijelentkezés
+    rejoin: Visszacsatlakozás
+    create: 'Új játék'
+
+login:
+  title: Bejelentkezés
+  buttons:
+    login: Bejelentkezés
+    auth_sch: Bejelentkezés AuthSCH-val
+    back: Vissza
+
+base:
+  footer:
+    help: Segítség
+
+register:
+  buttons:
+    register: Regisztrálás
+    back: Vissza
+
+game:
+  info:
+    header:
+      round: Kör
+      turn: Játék
+    body:
+      players: Játékosok
+      points: '%points% pont'
+    footer:
+      submit_button: Beküldés
+      reset_button: Visszaállítás
+      ready_button: Kész
+  choose:
+    submit: Kiválasztás
+    host_choosing_message: A nyertes kiválasztása folyamatban van!
+  recap:
+    winner: Nyertes
+    other_combinations: Többi kombináció
+

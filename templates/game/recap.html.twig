@@ -10,7 +10,7 @@
         <div class="col-md-9">
             <div class="row mb-3 justify-content-center">
                 <div class="col-md-12">
-                    <h3 class="fs-3 text-center">Winner</h3>
+                    <h3 class="fs-3 text-center">{% trans %}game.recap.winner{% endtrans %}</h3>
                 </div>
                 <div class="col-md-3">
                     <div class="card black-card">
@@ -25,7 +25,7 @@
             </div>
             <div class="row mb-3 justify-content-center">
                 <div class="col-md-12">
-                    <h3 class="fs-3 text-center">Other combinations</h3>
+                    <h3 class="fs-3 text-center">{% trans %}game.recap.other_combinations{% endtrans %}</h3>
                 </div>
                 {% for play in plays %}
                     {% if play is not same as(winningPlay) %}
@@ -54,9 +54,9 @@
 
 {% block javascripts %}
     <script type="application/json" id="mercure-url">
-        {{ mercure('http://localhost' ~ path('game', {slug: game.getSlug}),
+        {{ mercure(app.request.getSchemeAndHttpHost() ~ path('game', {slug: game.getSlug}),
             {
-                subscribe: 'http://localhost' ~ path('game', {slug: game.getSlug})
+                subscribe: app.request.getSchemeAndHttpHost() ~ path('game', {slug: game.getSlug})
             }
         )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
     </script>

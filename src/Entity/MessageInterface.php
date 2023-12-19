@@ -20,4 +20,8 @@ interface MessageInterface extends
     public function getMessage(): ?string;
 
     public function setMessage(?string $message): void;
+
+    public function getGame(): ?GameInterface;
+
+    public function setGame(?GameInterface $game): void;
 }

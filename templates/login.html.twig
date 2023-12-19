@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}{% trans %}login.title{% endtrans %}{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center">
@@ -16,11 +16,11 @@
             {% endif %}
 
             <div class="d-grid gap-2 mb-4">
-                <button type="submit" class="btn btn-primary">Log in</button>
+                <button type="submit" class="btn btn-primary">{% trans %}login.buttons.login{% endtrans %}</button>
             </div>
             <div class="d-grid gap-2 mb-5">
-                <a href="{{ path('auth_sch_redirect') }}" class="btn btn-primary">Log in with AuthSCH</a>
-                <button type="button" class="btn login-back-button btn-secondary">Back</button>
+                <a href="{{ path('auth_sch_redirect') }}" class="btn btn-primary">{% trans %}login.buttons.auth_sch{% endtrans %}</a>
+                <button type="button" class="btn login-back-button btn-secondary">{% trans %}login.buttons.back{% endtrans %}</button>
             </div>
             {{ form_end(loginForm) }}
         </div>

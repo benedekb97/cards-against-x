@@ -20,7 +20,6 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
-use function Symfony\Component\String\b;
 
 #[Entity]
 #[HasLifecycleCallbacks]

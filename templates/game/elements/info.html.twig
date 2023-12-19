@@ -1,12 +1,12 @@
 <div class="card">
     <div class="card-header">
         <span class="card-title">
-            Round: {{ game.getCurrentRound.getNumber }}/{{ game.getRounds.count }}<br>
-            Turn: {{ game.getCurrentRound.getCurrentTurn.getNumber }}/{{ game.getCurrentRound.getTurns.count }}
+            {% trans %}game.info.header.round{% endtrans %}: {{ game.getCurrentRound.getNumber }}/{{ game.getRounds.count }}<br>
+            {% trans %}game.info.header.turn{% endtrans %}: {{ game.getCurrentRound.getCurrentTurn.getNumber }}/{{ game.getCurrentRound.getTurns.count }}
         </span>
     </div>
     <div class="card-body" id="players">
-        <h5 class="card-title mb-3">Players</h5>
+        <h5 class="card-title mb-3">{% trans %}game.info.body.players{% endtrans %}</h5>
         <ul class="list-group">
             {% for player in game.getPlayers %}
                 <li
@@ -20,7 +20,7 @@
                     {% if game.getCurrentRound.getCurrentTurn.hasPlayerPlayed(player) and game.getCurrentRound.getCurrentTurn.getStatus.value is same as('in_progress') %}<i class="bi-check"></i>{% endif %}
                     {% if player.isReady %}<i class="bi bi-check"></i>{% endif %}
                     {% if game.getCurrentRound.getCurrentTurn.getPlayer is same as(player) %}<i class="bi-star"></i>{% endif %}<br>
-                    <i class="fs-6">{{ player.getPoints }} points</i>
+                    <i class="fs-6">{% trans with {'%points%': player.getPoints} from 'messages' %}game.info.body.points{% endtrans %}</i>
                 </li>
             {% endfor %}
         </ul>
@@ -28,17 +28,17 @@
     {% if showButtons is not defined %}
     <div class="card-footer">
         <div class="d-grid mb-3">
-            <button type="button" class="btn btn-secondary" disabled id="submit-button">Submit</button>
+            <button type="button" class="btn btn-secondary" disabled id="submit-button">{% trans %}game.info.footer.submit_button{% endtrans %}</button>
         </div>
         <div class="d-grid">
-            <button type="button" class="btn btn-secondary" disabled id="reset-button">Reset</button>
+            <button type="button" class="btn btn-secondary" disabled id="reset-button">{% trans %}game.info.footer.reset_button{% endtrans %}</button>
         </div>
     </div>
     {% endif %}
     {% if withReadyButton is defined and withReadyButton is same as(true) %}
         <div class="card-footer">
             <div class="d-grid">
-                <button type="button" class="btn btn-primary" id="recap-ready-button">Ready</button>
+                <button type="button" class="btn btn-primary" id="recap-ready-button">{% trans %}game.info.footer.ready_button{% endtrans %}</button>
             </div>
         </div>
     {% endif %}

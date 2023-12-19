@@ -26,7 +26,7 @@ class Play implements PlayInterface
     use TimestampableTrait;
 
     public function __construct(
-        #[ManyToOne(targetEntity: Player::class)]
+        #[ManyToOne(targetEntity: Player::class, inversedBy: 'plays')]
         private ?PlayerInterface $player = null,
 
         #[ManyToOne(targetEntity: Turn::class, inversedBy: 'plays')]

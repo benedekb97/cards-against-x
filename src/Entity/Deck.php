@@ -30,15 +30,15 @@ class Deck implements DeckInterface
     use TimestampableTrait;
     use DeletableTrait;
 
-    private function __construct(
+    public function __construct(
         #[Column(type: Types::STRING, nullable: true)]
         private ?string $name = null,
 
         #[Column(type: Types::BOOLEAN)]
         private bool $public = false,
 
-        #[ManyToMany(targetEntity: Card::class, mappedBy: 'decks')]
-        private readonly Collection $cards = new ArrayCollection()
+        #[ManyToMany(targetEntity: Card::class, mappedBy: 'decks', cascade: ['persist'])]
+        private Collection $cards = new ArrayCollection()
     ) {}
 
     public function getName(): ?string

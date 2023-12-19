@@ -33,8 +33,8 @@ class Card implements CardInterface
         #[Column(type: Types::JSON)]
         private ?array $text = null,
 
-        #[ManyToMany(targetEntity: Deck::class, inversedBy: 'cards')]
-        private readonly Collection $decks = new ArrayCollection()
+        #[ManyToMany(targetEntity: Deck::class, inversedBy: 'cards', cascade: ['persist'])]
+        private Collection $decks = new ArrayCollection()
     ) {}
 
     public function getType(): ?CardType

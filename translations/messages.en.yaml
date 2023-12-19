@@ -1,0 +1,43 @@
+index:
+  buttons:
+    help: Help
+    login: Log in
+    register: Register
+    logout: Log out
+    rejoin: Rejoin game
+    create: Create lobby
+
+base:
+  footer:
+    help: Help
+
+login:
+  title: Log in
+  buttons:
+    login: Log in
+    auth_sch: Log in with AuthSCH
+    back: Back
+
+register:
+  buttons:
+    register: Register
+    back: Back
+
+game:
+  info:
+    header:
+      round: Round
+      turn: Turn
+    body:
+      players: Players
+      points: '%points% points'
+    footer:
+      submit_button: Submit
+      reset_button: Reset
+      ready_button: Ready
+  choose:
+    submit: Submit
+    host_choosing_message: The host is choosing a winner!
+  recap:
+    winner: Winner
+    other_combinations: Other combinations

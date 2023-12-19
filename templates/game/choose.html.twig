@@ -20,7 +20,7 @@
         <div class="row mb-3 justify-content-center">
             <div class="col-md-3 d-grid">
                 <button class="btn btn-secondary" disabled id="play-submit-button">
-                    Submit
+                    {% trans %}game.choose.submit{% endtrans %}
                 </button>
             </div>
 
@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body text-center fs-3">
-                        The host is choosing a winner!
+                        {% trans %}game.choose.host_choosing_message{% endtrans %}
                     </div>
                 </div>
             </div>
@@ -42,9 +42,9 @@
 
 {% block javascripts %}
     <script type="application/json" id="mercure-url">
-        {{ mercure('http://localhost' ~ path('game', {slug: turn.getRound.getGame.getSlug}),
+        {{ mercure(app.request.getSchemeAndHttpHost() ~ path('game', {slug: turn.getRound.getGame.getSlug}),
             {
-                subscribe: 'http://localhost' ~ path('game', {slug: turn.getRound.getGame.getSlug})
+                subscribe: app.request.getSchemeAndHttpHost() ~ path('game', {slug: turn.getRound.getGame.getSlug})
             }
         )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
     </script>

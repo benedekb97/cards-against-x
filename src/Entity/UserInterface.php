@@ -52,4 +52,6 @@ interface UserInterface extends
     public function hasPlayer(): bool;
 
     public function isGameCreator(): bool;
+
+    public function addRole(string $role): void;
 }

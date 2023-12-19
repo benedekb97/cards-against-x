@@ -1,0 +1,10 @@
+login:
+  email_address: Email address
+  password: Password
+
+register:
+  email: Email address
+  password:
+    first: Password
+    second: Repeat password
+  name: Full name
