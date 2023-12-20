@@ -30,6 +30,9 @@ services:
             $deckImporter: '@App\Import\DeckImporter'
             $importStrategies:
                 - '@App\Import\Strategy\YamlImportStrategy'
+                - '@App\Import\Strategy\JsonImportStrategy'
+                - '@App\Import\Strategy\XmlImportStrategy'
+                - '@App\Import\Strategy\CsvImportStrategy'
 
     App\Security\FormLogin\FormLoginAuthenticator:
         autowire: false

@@ -16,80 +16,8 @@ class YamlImportStrategy extends AbstractImportStrategy implements ImportStrateg
         return $fileType === self::FILE_TYPE_YAML;
     }
 
-    public function import(string $filePath): DeckImportDTO
+    protected function parseFile(string $filePath): array
     {
-        $dto = new DeckImportDTO();
-
-        $file = Yaml::parseFile($filePath);
-
-        $this->importName($file, $dto);
-        $this->importPublicity($file, $dto);
-        $this->importWhiteCards($file, $dto);
-        $this->importBlackCards($file, $dto);
-
-        return $dto;
-    }
-
-    private function importName(array $file, DeckImportDTO $dto): void
-    {
-        $dto->setName(
-            array_key_exists('name', $file) ? $file['name'] : null
-        );
-    }
-
-    private function importPublicity(array $file, DeckImportDTO $dto): void
-    {
-        $dto->setPublic(
-            array_key_exists('public', $file) && $file['public']
-        );
-    }
-
-    private function importWhiteCards(array $file, DeckImportDTO $dto): void
-    {
-        if (!array_key_exists('cards', $file)) {
-            return;
-        }
-
-        $cards = $file['cards'];
-
-        if (!array_key_exists('white', $cards)) {
-            return;
-        }
-
-        foreach ($cards['white'] as $whiteCard) {
-            if (!is_string($whiteCard)) {
-                continue;
-            }
-
-            $dto->addWhiteCard(new WhiteCardDTO($whiteCard));
-        }
-    }
-
-    private function importBlackCards(array $file, DeckImportDTO $dto): void
-    {
-        if (!array_key_exists('cards', $file)) {
-            return;
-        }
-
-        $cards = $file['cards'];
-
-        if (!array_key_exists('black', $cards)) {
-            return;
-        }
-
-        foreach ($cards['black'] as $blackCard) {
-            if (!is_array($blackCard) || !array_key_exists('parts', $blackCard)) {
-                continue;
-            }
-
-            $blackCardDto = new BlackCardDTO();
-
-            foreach ($blackCard['parts'] as $part) {
-                $blackCardDto->addPart($part);
-            }
-
-
-            $dto->addBlackCard($blackCardDto);
-        }
+        return Yaml::parseFile($filePath);
     }
 }
