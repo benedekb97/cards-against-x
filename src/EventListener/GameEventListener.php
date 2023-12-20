@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Event\GameFinishEvent;
 use App\Event\GameUpdateEvent;
 use App\Message\GameMessage;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
