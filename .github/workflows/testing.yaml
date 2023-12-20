@@ -25,8 +25,10 @@ jobs:
         with:
           php-version: '8.2'
       - uses: actions/checkout@v3
-      - name: Copy .env.test.local
-        run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
+      - name: Create ,ebv
+        run: |
+          php -r "file_exists('.env.local') || copy('.env.test', '.env.local');"
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Copy phpunit.xml.dist
         run: php -r "file_exists('phpunit.xml') || copy('phpunit.xml.dist', 'phpunit.xml');"
       - name: Cache Composer packages
