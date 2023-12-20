@@ -1,13 +1,16 @@
 $body-bg: black;
 $body-color: white;
 
+$modal-content-bg: lighten($body-bg, 20%);
+$modal-content-color: darken($body-color, 10%);
+
 $card-bg: lighten($body-bg, 10%);
 
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons";
 
 .list-group-item {
-  background-color: lighten($body-bg, 20%);
+  background-color: lighten($body-bg, 15%);
   color: darken($body-color, 10%);
 }
 
@@ -113,4 +116,35 @@ a.card-link .card-body:hover {
 
 .card.black-card .black-card-link.black-card-link-clicked .card-body {
   background-color:rgba(255,255,255,0.1);
+}
+
+.card.deck .card-header {
+  background-color:rgba(255,255,255,0.2);
+}
+
+.card.deck .card-body.white-card-count {
+  background-color:rgba(255,255,255,0.95);
+  color: black;
+}
+
+.card.deck .card-body.black-card-count {
+  background-color:rgba(0,0,0,0.9);
+  color: white;
+}
+
+.card.deck .col-md.black-card-count-container {
+  padding-left:0;
+}
+
+.card.deck .col-md.white-card-count-container {
+  padding-right:0;
+}
+
+@include media-breakpoint-down(md) {
+  .card.deck .col-md.black-card-count-container {
+    padding: 0 12px !important;
+  }
+  .card.deck .col-md.white-card-count-container {
+    padding: 0 12px !important;
+  }
 }

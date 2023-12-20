@@ -6,6 +6,7 @@ index:
     logout: Log out
     rejoin: Rejoin game
     create: Create lobby
+    decks: Decks
 
 base:
   footer:
@@ -41,3 +42,10 @@ game:
   recap:
     winner: Winner
     other_combinations: Other combinations
+
+decks:
+  index:
+    title: Decks
+  deck:
+    white_card_count: '%cardCount% white cards'
+    black_card_count: '%cardCount% black cards'

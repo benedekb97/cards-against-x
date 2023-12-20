@@ -1,0 +1,20 @@
+<div class="card deck">
+    <div class="card-header">
+        <span class="card-title"><b>{{ deck.getName }}</b></span>
+    </div>
+    <div class="row">
+        <div class="d-grid col-md white-card-count-container">
+            <div class="card-body white-card-count">
+                {% trans with {'%cardCount%': deck.getWhiteCards.count} from 'messages' %}decks.deck.white_card_count{% endtrans %}
+            </div>
+        </div>
+        <div class="d-grid col-md black-card-count-container">
+            <div class="card-body black-card-count">
+                {% trans with {'%cardCount%': deck.getBlackCards.count} from 'messages' %}decks.deck.black_card_count{% endtrans %}
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <i>Placeholder</i>
+    </div>
+</div>

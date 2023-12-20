@@ -21,6 +21,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Security/FormLogin/FormLoginAuthenticator.php'
+            - '../src/MessageHandler/ImportDeckMessageHandler'
+
+    App\MessageHandler\ImportDeckMessageHandler:
+        tags: [messenger.message_handler]
+        autowire: false
+        arguments:
+            $deckImporter: '@App\Import\DeckImporter'
+            $importStrategies:
+                - '@App\Import\Strategy\YamlImportStrategy'
 
     App\Security\FormLogin\FormLoginAuthenticator:
         autowire: false
