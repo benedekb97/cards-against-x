@@ -1,6 +1,9 @@
 $body-bg: black;
 $body-color: white;
 
+$dropdown-bg: lighten($body-bg, 10%);
+$dropdown-color: darken($body-color, 10%);
+
 $card-bg: lighten($body-bg, 10%);
 
 @import "~bootstrap/scss/bootstrap";

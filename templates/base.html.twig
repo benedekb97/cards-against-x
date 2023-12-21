@@ -11,6 +11,23 @@
     </head>
     <body>
         <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="{{ path('index') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">Cards Against X</a>
+                <div class="dropdown text-end">
+                    <button class="btn d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ locale.getCurrentLocaleIcon | raw }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small">
+                        {% for localeCode in locale.availableLocales %}
+                            <li>
+                                <a href="{{ path('change_locale', {'localeCode': localeCode}) }}" class="dropdown-item">
+                                    {{ locale.getLocaleIcon(localeCode) | raw }} {{ locale.getLocaleName(localeCode) }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </header>
             <h1 class="page-header">
                 <a href="{{ path('index') }}">Cards Against X</a>
             </h1>
