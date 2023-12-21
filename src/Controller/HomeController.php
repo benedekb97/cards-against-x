@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\UserInterface;
+use App\Service\LocaleServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    public function __construct(
+        private readonly LocaleServiceInterface $localeService
+    ) {}
+
     #[Route('/', name: 'index')]
     public function index(): Response
     {
@@ -36,5 +43,13 @@ class HomeController extends AbstractController
     public function help(): Response
     {
 
+    }
+
+    #[Route('/locale/{localeCode}', name: 'change_locale')]
+    public function changeLocale(Request $request, string $localeCode): RedirectResponse
+    {
+        $this->localeService->changeLocale($localeCode);
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }

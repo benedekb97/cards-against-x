@@ -1,6 +1,9 @@
 $body-bg: black;
 $body-color: white;
 
+$dropdown-bg: lighten($body-bg, 10%);
+$dropdown-color: darken($body-color, 10%);
+
 $card-bg: lighten($body-bg, 10%);
 
 @import "~bootstrap/scss/bootstrap";
@@ -11,16 +14,8 @@ $card-bg: lighten($body-bg, 10%);
   color: darken($body-color, 10%);
 }
 
-h1.page-header{
+a.page-header{
   text-shadow:0 0 10px white;
-  font-size:30pt;
-  margin-top:10px;
-  padding-top:0;
-  color:white;
-  margin-bottom:50px;
-}
-
-h1.page-header a{
   text-decoration: none;
   color: white;
 }

@@ -6,6 +6,10 @@
 parameters:
     app.host: '%env(APP_HOST)%'
 
+    app.locales:
+        - en
+        - hu
+
 services:
     # default configuration for services in *this* file
     _defaults:

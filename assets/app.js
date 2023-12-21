@@ -8,6 +8,7 @@
 // any CSS you import will output into a single css file (app.scss in this case)
 import './styles/app.scss';
 import {read} from "@popperjs/core";
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 const $ = require('jquery');
 
