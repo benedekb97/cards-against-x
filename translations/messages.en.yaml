@@ -46,6 +46,12 @@ game:
 decks:
   index:
     title: Decks
+    sidebar:
+      title: Actions
+      import: Import deck
+    import_modal:
+      title: Import deck
+      submit: Import
   deck:
     white_card_count: '%cardCount% white cards'
     black_card_count: '%cardCount% black cards'

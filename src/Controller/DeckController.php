@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\DeckImport;
 use App\Entity\Enum\Role;
 use App\Entity\UserInterface;
 use App\Form\ImportDeckType;
 use App\Message\ImportDeckMessage;
 use App\Repository\DeckRepositoryInterface;
 use App\Service\DeckImportFileUploaderServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +26,8 @@ class DeckController extends AbstractController
     public function __construct(
         private readonly DeckRepositoryInterface $deckRepository,
         private readonly DeckImportFileUploaderServiceInterface $deckImportFileUploaderService,
-        private readonly MessageBusInterface $messageBus
+        private readonly MessageBusInterface $messageBus,
+        private readonly EntityManagerInterface $entityManager
     ) {}
 
     #[Route('/decks', name: 'decks.index', methods: [Request::METHOD_GET])]
@@ -64,16 +67,31 @@ class DeckController extends AbstractController
             /** @var UserInterface $user */
             $user = $this->getUser();
 
-            $this->messageBus->dispatch(
-                new ImportDeckMessage(
-                    $filePath,
-                    $user->getId()
-                )
+            $deckImport = new DeckImport();
+
+            $deckImport->setCreatedBy($user);
+            $deckImport->setFilePath($filePath);
+
+            $this->entityManager->persist($deckImport);
+            $this->entityManager->flush();
+
+            $this->messageBus->dispatch(new ImportDeckMessage($deckImport->getId()));
+
+            return new RedirectResponse(
+                $this->generateUrl('decks.import.view', ['importId' => $deckImport->getId()])
             );
         }
 
         return new RedirectResponse(
             $this->generateUrl('decks.index')
         );
+    }
+
+    #[Route('/decks/imports/{importId}', name: 'decks.import.view', methods: [Request::METHOD_GET])]
+    #[IsGranted(Role::ROLE_USER->value)]
+    public function viewImport(Request $request, int $importId): Response
+    {
+        // TODO: Add view import page
+        dd($importId);
     }
 }

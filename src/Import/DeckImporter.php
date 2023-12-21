@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Import;
 
+use App\Entity\DeckImportInterface;
 use App\Entity\DeckInterface;
+use App\Entity\Enum\ImportStatus;
 use App\Entity\UserInterface;
 use App\Factory\CardFactoryInterface;
 use App\Factory\DeckFactoryInterface;
@@ -31,11 +33,15 @@ class DeckImporter implements DeckImporterInterface
         $this->importStrategy = $importStrategy;
     }
 
-    public function import(string $filePath, int $userId): void
+    public function import(DeckImportInterface $deckImport): void
     {
-        $dto = $this->importStrategy->import($filePath);
+        $deckImport->setStatus(ImportStatus::IN_PROGRESS);
+        $this->entityManager->persist($deckImport);
+        $this->entityManager->flush();
 
-        $user = $this->userRepository->find($userId);
+        $dto = $this->importStrategy->import($deckImport->getFilePath());
+
+        $user = $this->userRepository->find($deckImport->getCreatedBy()->getId());
 
         $deck = $this->deckFactory->createForUser($user);
 
@@ -47,6 +53,10 @@ class DeckImporter implements DeckImporterInterface
 
         $this->entityManager->persist($deck);
         $this->entityManager->persist($user);
+
+        $deckImport->setStatus(ImportStatus::IMPORTED);
+
+        $this->entityManager->persist($deckImport);
 
         $this->entityManager->flush();
     }

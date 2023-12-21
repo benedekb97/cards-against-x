@@ -27,6 +27,8 @@ services:
         tags: [messenger.message_handler]
         autowire: false
         arguments:
+            $deckImportRepository: '@App\Repository\DeckImportRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
             $deckImporter: '@App\Import\DeckImporter'
             $importStrategies:
                 - '@App\Import\Strategy\YamlImportStrategy'

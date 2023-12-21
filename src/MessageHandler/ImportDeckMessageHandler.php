@@ -4,26 +4,41 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
+use App\Entity\Enum\ImportStatus;
 use App\Import\DeckImporterInterface;
 use App\Import\Strategy\ImportStrategyInterface;
 use App\Message\ImportDeckMessage;
+use App\Repository\DeckImportRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class ImportDeckMessageHandler
+readonly class ImportDeckMessageHandler
 {
     public function __construct(
-        private readonly DeckImporterInterface $deckImporter,
-        private readonly array $importStrategies
+        private DeckImporterInterface         $deckImporter,
+        private array                         $importStrategies,
+        private EntityManagerInterface        $entityManager,
+        private DeckImportRepositoryInterface $deckImportRepository
     ) {}
 
     public function __invoke(ImportDeckMessage $message): void
     {
-        $extension = $this->getExtension($message->getFileLocation());
+        $deckImport = $this->deckImportRepository->find($message->getDeckImportId());
+
+        $extension = $this->getExtension($deckImport->getFilePath());
 
         $this->deckImporter->setImportStrategy($this->resolveImportStrategy($extension));
 
-        $this->deckImporter->import($message->getFileLocation(), $message->getUserId());
+        try {
+            $this->deckImporter->import($deckImport);
+        } catch (\Exception $exception) {
+            $deckImport->setStatus(ImportStatus::ERROR);
+            $deckImport->setErrorString($exception->getMessage());
+
+            $this->entityManager->persist($deckImport);
+            $this->entityManager->flush();
+        }
     }
 
     private function getExtension(string $filePath): string

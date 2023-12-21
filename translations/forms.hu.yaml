@@ -8,3 +8,7 @@ register:
     first: Jelszó
     second: Jelszó megerősítése
   name: Teljes név
+
+decks:
+  import:
+    file: 'Import fájl (Elfogadott formátumok: CSV, YAML, JSON, XML)'
