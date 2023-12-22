@@ -3,6 +3,9 @@ twig:
 
     form_themes: ['bootstrap_5_layout.html.twig']
 
+    globals:
+        locale: '@App\Service\LocaleService'
+
 when@test:
     twig:
         strict_variables: true
