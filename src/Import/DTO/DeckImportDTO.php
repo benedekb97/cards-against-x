@@ -8,8 +8,6 @@ class DeckImportDTO
 {
     private ?string $name = null;
 
-    private bool $public = false;
-
     private array $whiteCards = [];
 
     private array $blackCards = [];
@@ -22,18 +20,6 @@ class DeckImportDTO
     public function setName(?string $name): DeckImportDTO
     {
         $this->name = $name;
-        return $this;
-    }
-
-    public function isPublic(): bool
-    {
-        return $this->public;
-    }
-
-    public function setPublic(bool $public): self
-    {
-        $this->public = $public;
-
         return $this;
     }
 

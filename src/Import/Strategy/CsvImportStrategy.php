@@ -13,7 +13,6 @@ use League\Csv\Reader;
 class CsvImportStrategy extends AbstractImportStrategy implements ImportStrategyInterface
 {
     public const HEADER_NAME = 'Name';
-    public const HEADER_PUBLIC = 'Public';
     public const HEADER_TYPE = 'Type';
     public const HEADER_PARTS = 'Parts';
     public const HEADER_TEXT = 'Text';
@@ -50,10 +49,6 @@ class CsvImportStrategy extends AbstractImportStrategy implements ImportStrategy
         foreach ($row as $headerValue => $value) {
             if (null === $dto->getName() && self::HEADER_NAME === $headerValue) {
                 $dto->setName($value);
-            }
-
-            if (self::HEADER_PUBLIC === $headerValue && !empty($value)) {
-                $dto->setPublic((bool)$value);
             }
 
             if (self::HEADER_TYPE === $headerValue && $value === CardType::WHITE->value) {

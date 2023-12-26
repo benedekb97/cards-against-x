@@ -13,6 +13,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\OneToOne;
 
 #[Entity(repositoryClass: DeckImportRepository::class)]
 #[HasLifecycleCallbacks]
@@ -30,6 +31,9 @@ class DeckImport implements DeckImportInterface
 
     #[Column(type: Types::STRING, enumType: ImportStatus::class)]
     private ImportStatus $status = ImportStatus::DRAFT;
+
+    #[OneToOne(targetEntity: Deck::class)]
+    private ?DeckInterface $deck = null;
 
     public function getFilePath(): ?string
     {
@@ -59,5 +63,15 @@ class DeckImport implements DeckImportInterface
     public function setStatus(ImportStatus $status): void
     {
         $this->status = $status;
+    }
+
+    public function getDeck(): ?DeckInterface
+    {
+        return $this->deck;
+    }
+
+    public function setDeck(?DeckInterface $deck): void
+    {
+        $this->deck = $deck;
     }
 }

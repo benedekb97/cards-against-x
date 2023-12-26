@@ -32,6 +32,10 @@ services:
         autowire: false
         arguments:
             $deckImportRepository: '@App\Repository\DeckImportRepository'
+            $hub: '@mercure.hub.default'
+            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            $parameterBag: '@parameter_bag'
+            $serializer: '@serializer'
             $entityManager: '@doctrine.orm.entity_manager'
             $deckImporter: '@App\Import\DeckImporter'
             $importStrategies:

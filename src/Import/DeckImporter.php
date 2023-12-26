@@ -46,7 +46,6 @@ class DeckImporter implements DeckImporterInterface
         $deck = $this->deckFactory->createForUser($user);
 
         $deck->setName($dto->getName());
-        $deck->setPublic($dto->isPublic());
 
         $this->createWhiteCards($dto, $deck, $user);
         $this->createBlackCards($dto, $deck, $user);
@@ -55,6 +54,7 @@ class DeckImporter implements DeckImporterInterface
         $this->entityManager->persist($user);
 
         $deckImport->setStatus(ImportStatus::IMPORTED);
+        $deckImport->setDeck($deck);
 
         $this->entityManager->persist($deckImport);
 

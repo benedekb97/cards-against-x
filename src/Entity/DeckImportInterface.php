@@ -22,4 +22,8 @@ interface DeckImportInterface extends ResourceInterface, CreatedByUserInterface,
     public function getStatus(): ImportStatus;
 
     public function setStatus(ImportStatus $status): void;
+
+    public function getDeck(): ?DeckInterface;
+
+    public function setDeck(?DeckInterface $deck): void;
 }

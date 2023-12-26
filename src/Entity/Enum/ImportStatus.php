@@ -10,4 +10,14 @@ enum ImportStatus: string
     case IN_PROGRESS = 'in_progress';
     case IMPORTED = 'imported';
     case ERROR = 'error';
+
+    public function getName(): string
+    {
+        return match($this) {
+            self::DRAFT => 'Draft',
+            self::IN_PROGRESS => 'In progress',
+            self::IMPORTED => 'Imported',
+            self::ERROR => 'Error',
+        };
+    }
 }

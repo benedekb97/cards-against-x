@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deck import{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    Your deck is importing. This page will refresh once the import is completed!
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {% block  %}
+            <div class="card">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ path('decks.import.view', {'importId': deckImport.getId()}) }}">
+
+                            </a>
+                        </a>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    {% block deckContent %}
+                        Lól
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/json" id="mercure-url">
+        {{ mercure(app.request.getSchemeAndHttpHost() ~ path('decks.import.view', {importId: deckImport.getId}),
+            {
+                subscribe: app.request.getSchemeAndHttpHost() ~ path('decks.import.view', {importId: deckImport.getId})
+            }
+        )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+    </script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

@@ -17,7 +17,6 @@ abstract class AbstractImportStrategy implements ImportStrategyInterface
         $file = $this->parseFile($filePath);
 
         $this->importName($file, $dto);
-        $this->importPublicity($file, $dto);
         $this->importWhiteCards($file, $dto);
         $this->importBlackCards($file, $dto);
 
@@ -30,13 +29,6 @@ abstract class AbstractImportStrategy implements ImportStrategyInterface
     {
         $dto->setName(
             array_key_exists('name', $file) ? $file['name'] : null
-        );
-    }
-
-    protected function importPublicity(array $file, DeckImportDTO $dto): void
-    {
-        $dto->setPublic(
-            array_key_exists('public', $file) && $file['public']
         );
     }
 
