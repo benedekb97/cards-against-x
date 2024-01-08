@@ -27,4 +27,6 @@ interface RoundInterface extends ResourceInterface, HasGameInterface, Timestampa
     public function addTurn(TurnInterface $turn): void;
 
     public function removeTurn(TurnInterface $turn): void;
+
+    public function getTurn(int $number): ?TurnInterface;
 }

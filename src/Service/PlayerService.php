@@ -7,12 +7,10 @@ namespace App\Service;
 use App\Entity\CardInterface;
 use App\Entity\TurnInterface;
 use App\Entity\UserInterface;
-use App\Event\GameUpdateEvent;
-use App\Event\TurnEvent;
 use App\Factory\PlayFactoryInterface;
+use App\Processor\Game\GameProcessor;
 use App\Repository\CardRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +23,7 @@ readonly class PlayerService implements PlayerServiceInterface
         private CardRepositoryInterface $cardRepository,
         private PlayFactoryInterface $playFactory,
         private EntityManagerInterface $entityManager,
-        private EventDispatcherInterface $eventDispatcher
+        private GameProcessor $gameProcessor,
     ) {}
 
     public function submitCards(Request $request): JsonResponse
@@ -57,12 +55,10 @@ readonly class PlayerService implements PlayerServiceInterface
         $this->entityManager->persist($play);
         $this->entityManager->persist($user->getPlayer());
 
-        $this->eventDispatcher->dispatch(new TurnEvent($turn));
-        $this->eventDispatcher->dispatch(new GameUpdateEvent($turn->getRound()->getGame()));
-
         $this->entityManager->persist($turn);
         $this->entityManager->persist($turn->getRound()->getGame());
-        $this->entityManager->flush();
+
+        $this->gameProcessor->process($user->getPlayer()->getGame());
 
         return new JsonResponse(
             [

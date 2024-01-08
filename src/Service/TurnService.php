@@ -6,12 +6,10 @@ namespace App\Service;
 
 use App\Entity\PlayInterface;
 use App\Entity\UserInterface;
-use App\Event\GameUpdateEvent;
-use App\Event\TurnEvent;
 use App\Message\EndTurnMessage;
+use App\Processor\Game\GameProcessor;
 use App\Repository\PlayRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +20,9 @@ readonly class TurnService implements TurnServiceInterface
 {
     public function __construct(
         private PlayRepositoryInterface $playRepository,
-        private EventDispatcherInterface $eventDispatcher,
         private EntityManagerInterface $entityManager,
-        private MessageBusInterface $messageBus
+        private MessageBusInterface $messageBus,
+        private GameProcessor $gameProcessor,
     ) {}
 
     public function setWinner(UserInterface $user, Request $request): JsonResponse
@@ -45,11 +43,8 @@ readonly class TurnService implements TurnServiceInterface
 
         $play->setPoints($user->getPlayer()->getGame()->getPlayers()->count());
 
-        $this->eventDispatcher->dispatch(new TurnEvent($turn));
-        $this->eventDispatcher->dispatch(new GameUpdateEvent($turn->getRound()->getGame()));
-
         $this->entityManager->persist($turn);
-        $this->entityManager->flush();
+        $this->gameProcessor->process($user->getPlayer()->getGame());
 
         $this->messageBus->dispatch(
             new EndTurnMessage($turn->getId()),
