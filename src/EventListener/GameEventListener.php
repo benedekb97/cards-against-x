@@ -29,7 +29,7 @@ readonly class GameEventListener
             $url = $this->urlGenerator->generate('game', ['slug' => $game->getSlug()]),
             $game->getPlayers()->toArray(),
             $game->getStatus(),
-            $game->getCurrentRound()->getCurrentTurn()->getStatus()
+            $game?->getCurrentRound()?->getCurrentTurn()?->getStatus()
         );
 
         $this->hub->publish(

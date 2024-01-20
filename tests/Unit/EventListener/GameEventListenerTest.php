@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\EventListener;
+namespace App\Tests\Unit\EventListener;
 
 use App\Entity\Game;
 use App\Entity\Player;

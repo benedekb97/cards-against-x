@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Processor\Game;
+namespace App\Tests\Unit\Processor\Game;
 
 use App\Entity\Game;
 use App\Processor\Game\GamePlayerCardProcessor;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Checker;
+namespace App\Tests\Unit\Checker;
 
 use App\Checker\UserStartActionChecker;
 use App\Checker\UserStartActionCheckerInterface;

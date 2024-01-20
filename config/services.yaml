@@ -34,6 +34,7 @@ services:
             $httpUtils: '@security.http_utils'
             $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
             $userProvider: '@security.user.provider.concrete.app_user_provider'
+            $httpKernel: '@http_kernel'
             $options:
                 check_path: login
                 login_path: login

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Processor\Game;
+namespace App\Tests\Unit\Processor\Game;
 
 use App\Entity\Enum\GameStatus;
 use App\Entity\Enum\TurnStatus;
@@ -15,7 +15,6 @@ use App\Entity\User;
 use App\Processor\Game\PlayerReadyStateProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use function Symfony\Component\String\b;
 
 class PlayerReadyStateProcessorTest extends TestCase
 {

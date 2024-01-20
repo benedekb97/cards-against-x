@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Unit\Processor\Game;
+namespace App\Tests\Unit\Processor\Game;
 
 use App\Entity\Game;
 use App\Entity\Round;
 use App\Entity\Turn;
 use App\Processor\Game\CurrentRoundProcessor;
+use App\Service\GameCardServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +19,8 @@ class CurrentRoundProcessorTest extends TestCase
     public function setUp(): void
     {
         $this->currentRoundProcessor = new CurrentRoundProcessor(
-            $this->createMock(EntityManagerInterface::class)
+            $this->createMock(EntityManagerInterface::class),
+            $this->createMock(GameCardServiceInterface::class)
         );
     }
 
