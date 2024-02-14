@@ -2,7 +2,7 @@
 # https://github.com/gpslab/geoip2
 gpslab_geoip:
     # You should specify your personal licence key
-    license: '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'
+    license: '%env(GEOIP_LICENSE_ID)%'
 
     # Edition ID of database you need
     edition: 'GeoLite2-Country'
