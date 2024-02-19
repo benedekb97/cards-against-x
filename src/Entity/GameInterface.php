@@ -68,4 +68,6 @@ interface GameInterface extends ResourceInterface, TimestampableInterface, Delet
     public function hasUser(UserInterface $user): bool;
 
     public function allPlayersReady(): bool;
+
+    public function getRound(int $number): ?RoundInterface;
 }

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\MessageHandler;
 
 use App\Entity\Enum\TurnStatus;
-use App\Event\GameUpdateEvent;
-use App\Event\RoundEvent;
+use App\Entity\TurnInterface;
 use App\Message\EndTurnMessage;
+use App\Processor\Game\GameProcessor;
 use App\Repository\TurnRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,12 +17,13 @@ readonly class EndTurnMessageHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private EventDispatcherInterface $eventDispatcher,
-        private TurnRepositoryInterface $turnRepository
+        private TurnRepositoryInterface $turnRepository,
+        private GameProcessor $gameProcessor
     ) {}
 
     public function __invoke(EndTurnMessage $endTurnMessage): void
     {
+        /** @var TurnInterface $turn */
         $turn = $this->turnRepository->find($endTurnMessage->getTurnId());
 
         if ($turn === null) {
@@ -41,9 +41,6 @@ readonly class EndTurnMessageHandler
 
         $this->entityManager->persist($turn);
 
-        $this->eventDispatcher->dispatch(new RoundEvent($turn->getRound()));
-        $this->eventDispatcher->dispatch(new GameUpdateEvent($turn->getRound()->getGame()));
-
-        $this->entityManager->flush();
+        $this->gameProcessor->process($turn->getRound()->getGame());
     }
 }

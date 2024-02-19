@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Checker;
+namespace App\Tests\Unit\Checker;
 
 use App\Checker\UserCardSubmitActionChecker;
 use App\Checker\UserCardSubmitActionCheckerInterface;

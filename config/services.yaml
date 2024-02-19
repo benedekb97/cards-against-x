@@ -34,6 +34,7 @@ services:
             $httpUtils: '@security.http_utils'
             $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
             $userProvider: '@security.user.provider.concrete.app_user_provider'
+            $httpKernel: '@http_kernel'
             $options:
                 check_path: login
                 login_path: login
@@ -41,7 +42,45 @@ services:
                 password_parameter: 'login[password]'
                 use_forward: false
 
+    App\Processor\Game\TurnStatusProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 10 }
 
+    App\Processor\Game\RoundProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 20 }
+
+    App\Processor\Game\CurrentRoundProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 30 }
+
+    App\Processor\Game\GameStatusProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 40 }
+
+    App\Processor\Game\GamePlayerCardProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 50 }
+
+    App\Processor\Game\PlayerReadyStateProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 60 }
+
+    App\Processor\Game\GameFlushProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 70 }
+
+    App\Processor\Game\GameUpdateProcessor:
+        autowire: true
+        tags:
+            - { name: 'app.game_processor', priority: 100 }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

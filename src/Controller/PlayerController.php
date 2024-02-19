@@ -6,9 +6,8 @@ namespace App\Controller;
 
 use App\Entity\Enum\GameStatus;
 use App\Entity\UserInterface;
-use App\Event\GameUpdateEvent;
 use App\Event\LobbyUpdateEvent;
-use App\Event\TurnEvent;
+use App\Processor\Game\GameProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +20,8 @@ class PlayerController extends AbstractController
     #[Route('/ready', name: 'ready', methods: ['POST'])]
     public function ready(
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        GameProcessor $gameProcessor
     ): Response
     {
         /** @var UserInterface $user */
@@ -45,17 +45,7 @@ class PlayerController extends AbstractController
             $eventDispatcher->dispatch(new LobbyUpdateEvent($user->getPlayer()->getGame()));
         }
 
-        if ($user->getPlayer()->getGame()->getStatus() === GameStatus::IN_PROGRESS) {
-            if ($user->getPlayer()->getGame()->allPlayersReady()) {
-                $eventDispatcher->dispatch(
-                    new TurnEvent($user->getPlayer()->getGame()->getCurrentRound()->getCurrentTurn())
-                );
-            }
-
-            $eventDispatcher->dispatch(new GameUpdateEvent($user->getPlayer()->getGame()));
-        }
-
-        $entityManager->flush();
+        $gameProcessor->process($user->getPlayer()->getGame());
 
         return new JsonResponse(
             [

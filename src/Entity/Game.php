@@ -228,4 +228,16 @@ class Game implements GameInterface
 
         return true;
     }
+
+    public function getRound(int $number): ?RoundInterface
+    {
+        /** @var RoundInterface $round */
+        foreach ($this->rounds as $round) {
+            if ($round->getNumber() === $number) {
+                return $round;
+            }
+        }
+
+        return null;
+    }
 }

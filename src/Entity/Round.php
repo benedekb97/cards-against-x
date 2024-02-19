@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
+use function Symfony\Component\String\b;
 
 #[Entity]
 #[HasLifecycleCallbacks]
@@ -81,5 +82,17 @@ class Round implements RoundInterface
             $this->turns->removeElement($turn);
             $turn->setRound(null);
         }
+    }
+
+    public function getTurn(int $number): ?TurnInterface
+    {
+        /** @var TurnInterface $turn */
+        foreach ($this->turns as $turn) {
+            if ($turn->getNumber() === $number) {
+                return $turn;
+            }
+        }
+
+        return null;
     }
 }
