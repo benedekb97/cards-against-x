@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enum\DeckType;
 use App\Entity\Traits\CreatedByUserInterface;
 use App\Entity\Traits\DeletableInterface;
 use App\Entity\Traits\ResourceInterface;
@@ -16,10 +17,6 @@ interface DeckInterface extends ResourceInterface, CreatedByUserInterface, Times
 
     public function setName(?string $name): void;
 
-    public function isPublic(): bool;
-
-    public function setPublic(bool $public): void;
-
     public function getWhiteCards(): Collection;
 
     public function getBlackCards(): Collection;
@@ -31,4 +28,8 @@ interface DeckInterface extends ResourceInterface, CreatedByUserInterface, Times
     public function addCard(CardInterface $card): void;
 
     public function removeCard(CardInterface $card): void;
+
+    public function getType(): DeckType;
+
+    public function setType(DeckType $type): void;
 }

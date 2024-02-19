@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Enum\DeckType;
 use App\Entity\UserInterface;
 use App\Factory\DeckFactoryInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -19,7 +20,7 @@ class DeckFixture extends Fixture implements DependentFixtureInterface
         $deck = $this->deckFactory->createForUser($this->loadUser());
 
         $deck->setName('Test deck');
-        $deck->setPublic(true);
+        $deck->setType(DeckType::PUBLIC);
 
         $manager->persist($deck);
         $manager->flush();

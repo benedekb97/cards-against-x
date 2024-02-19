@@ -61,10 +61,18 @@ if (mercureUrl !== null) {
         if (url.includes('game')) {
             gameFunction(data);
         }
+
+        if (url.includes('decks/import')) {
+            deckImportFunction(data);
+        }
     }
 }
 
 const playerId = parseInt($('#player-id').val());
+
+const deckImportFunction = function (data) {
+    window.location.reload();
+}
 
 const lobbyFunction = function (data) {
     if (data.status === 'in_progress') {

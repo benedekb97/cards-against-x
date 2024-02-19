@@ -8,3 +8,7 @@ register:
     first: Password
     second: Repeat password
   name: Full name
+
+decks:
+  import:
+    file: 'Import file (Accepted formats: CSV, YAML, JSON, XML)'

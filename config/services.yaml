@@ -25,6 +25,24 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Security/FormLogin/FormLoginAuthenticator.php'
+            - '../src/MessageHandler/ImportDeckMessageHandler'
+
+    App\MessageHandler\ImportDeckMessageHandler:
+        tags: [messenger.message_handler]
+        autowire: false
+        arguments:
+            $deckImportRepository: '@App\Repository\DeckImportRepository'
+            $hub: '@mercure.hub.default'
+            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            $parameterBag: '@parameter_bag'
+            $serializer: '@serializer'
+            $entityManager: '@doctrine.orm.entity_manager'
+            $deckImporter: '@App\Import\DeckImporter'
+            $importStrategies:
+                - '@App\Import\Strategy\YamlImportStrategy'
+                - '@App\Import\Strategy\JsonImportStrategy'
+                - '@App\Import\Strategy\XmlImportStrategy'
+                - '@App\Import\Strategy\CsvImportStrategy'
 
     App\Security\FormLogin\FormLoginAuthenticator:
         autowire: false

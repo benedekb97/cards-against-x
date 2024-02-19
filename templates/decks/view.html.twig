@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Title{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <ul class="nav nav-tabs border-dark">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if view is same as 'general' %}active text-white bg-dark border-dark{% endif %}"
+                            aria-current="page"
+                            href="{{ path('decks.view', {'deckId': deck.getId, 'view': 'general'}) }}"
+                        >
+                            General
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if view is same as 'black' %}active text-white bg-dark border-dark{% endif %}"
+                            href="{{ path('decks.view', {'deckId': deck.getId, 'view': 'black'}) }}"
+                        >
+                            Black cards
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if view is same as 'white' %}active text-white bg-dark border-dark{% endif %}"
+                            href="{{ path('decks.view', {'deckId': deck.getId, 'view': 'white'}) }}"
+                        >
+                            White cards
+                        </a>
+                    </li>
+                </ul>
+                <div class="card-body bg-dark">
+                    {% include 'decks/elements/deck_content.html.twig' with {'deck': deck, 'view': view} %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

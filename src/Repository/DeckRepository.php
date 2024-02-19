@@ -6,7 +6,9 @@ namespace App\Repository;
 
 use App\Entity\Deck;
 use App\Entity\DeckInterface;
+use App\Entity\Enum\DeckType;
 use App\Entity\GameInterface;
+use App\Entity\UserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,12 +19,23 @@ class DeckRepository extends ServiceEntityRepository implements DeckRepositoryIn
         parent::__construct($registry, Deck::class);
     }
 
+    public function getDecksForUser(UserInterface $user): array
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.type = :type')
+            ->orWhere('d.createdBy = :user')
+            ->setParameter('type', DeckType::PUBLIC)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getDecksForGame(GameInterface $game): array
     {
         return $this->createQueryBuilder('d')
-            ->where('d.public = :public')
+            ->where('d.type = :type')
             ->orWhere('d.createdBy = :user')
-            ->setParameter('public', true)
+            ->setParameter('type', DeckType::PUBLIC)
             ->setParameter('user', $game->getCreatedBy())
             ->getQuery()
             ->getResult();
@@ -32,10 +45,10 @@ class DeckRepository extends ServiceEntityRepository implements DeckRepositoryIn
     {
         return $this->createQueryBuilder('d')
             ->where('d.createdBy = :user')
-            ->orWhere('d.public = :public')
+            ->orWhere('d.type = :type')
             ->andWhere('d.id = :id')
             ->setParameter('user', $game->getCreatedBy())
-            ->setParameter('public', true)
+            ->setParameter('type', DeckType::PUBLIC)
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();

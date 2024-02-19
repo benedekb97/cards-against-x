@@ -6,6 +6,7 @@ index:
     logout: Kijelentkezés
     rejoin: Visszacsatlakozás
     create: 'Új játék'
+    decks: Paklik
 
 login:
   title: Bejelentkezés
@@ -42,3 +43,15 @@ game:
     winner: Nyertes
     other_combinations: Többi kombináció
 
+decks:
+  index:
+    title: Paklik
+    sidebar:
+      title: Paklik
+      import: Pakli importálása
+    import_modal:
+      title: Pakli importálása
+      submit: Mentés
+  deck:
+    white_card_count: '%cardCount% fehér kártya'
+    black_card_count: '%cardCount% fekete kártya'

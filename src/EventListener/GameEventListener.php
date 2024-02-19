@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use App\Event\GameUpdateEvent;
 use App\Message\GameMessage;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -18,7 +19,8 @@ readonly class GameEventListener
     public function __construct(
         private HubInterface $hub,
         private SerializerInterface $serializer,
-        private UrlGeneratorInterface $urlGenerator
+        private UrlGeneratorInterface $urlGenerator,
+        private ParameterBagInterface $parameterBag
     ) {}
 
     public function onGameUpdate(GameUpdateEvent $event): void
@@ -34,7 +36,7 @@ readonly class GameEventListener
 
         $this->hub->publish(
             new Update(
-                'http://localhost' . $url,
+                $this->parameterBag->get('app.host') . $url,
                 $this->serializer->serialize($gameUpdateMessage, 'json', ['groups' => ['gameUpdate']])
             )
         );

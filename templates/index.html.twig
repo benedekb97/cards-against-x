@@ -4,29 +4,32 @@
 
 {% block body %}
     <div class="row">
-        <div class="d-grid gap-2 col-md-4">
+        <div class="d-grid gap-2 col-md-4 mb-3">
             <a href="{{ path('help') }}" class="btn btn-block btn-lg btn-secondary" style="cursor:help">{% trans %}index.buttons.help{% endtrans %}</a>
         </div>
         {% if not is_granted('ROLE_USER') %}
-            <div class="d-grid gap-2 col-md-4">
+            <div class="d-grid gap-2 col-md-4 mb-3">
                 <a href="{{ path('login') }}" class="btn btn-lg btn-primary">{% trans %}index.buttons.login{% endtrans %}</a>
             </div>
-            <div class="d-grid gap-2 col-md-4">
+            <div class="d-grid gap-2 col-md-4 mb-3">
                 <a href="{{ path('register') }}" class="btn btn-lg btn-success">{% trans %}index.buttons.register{% endtrans %}</a>
             </div>
         {% else %}
-            <div class="d-grid gap-2 col-md-4">
+            <div class="d-grid gap-2 col-md-4 mb-3">
                 <a href="{{ path('logout') }}" class="btn btn-lg btn-danger">{% trans %}index.buttons.logout{% endtrans %}</a>
             </div>
             {% if game is not null %}
-                <div class="d-grid gap-2 col-md-4">
+                <div class="d-grid gap-2 col-md-4 mb-3">
                     <a href="{{ path('rejoin') }}" class="btn btn-lg btn-primary">{% trans %}index.buttons.rejoin{% endtrans %}</a>
                 </div>
             {% else %}
-                <div class="d-grid gap-2 col-md-4">
+                <div class="d-grid gap-2 col-md-4 mb-3">
                     <a href="{{ path('create') }}"  class="btn btn-lg btn-primary">{% trans %}index.buttons.create{% endtrans %}</a>
                 </div>
             {% endif %}
+            <div class="d-grid gap-2 col-md-4 mb-3">
+                <a href="{{ path('decks.index') }}" class="btn btn-lg btn-warning">{% trans %}index.buttons.decks{% endtrans %}</a>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

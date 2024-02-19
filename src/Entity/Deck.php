@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Enum\CardType;
+use App\Entity\Enum\DeckType;
 use App\Entity\Traits\CreatedByUserTrait;
 use App\Entity\Traits\DeletableTrait;
 use App\Entity\Traits\ResourceTrait;
@@ -32,13 +33,13 @@ class Deck implements DeckInterface
 
     public function __construct(
         #[Column(type: Types::STRING, nullable: true)]
-        private ?string $name = null,
-
-        #[Column(type: Types::BOOLEAN)]
-        private bool $public = false,
+        private ?string    $name = null,
 
         #[ManyToMany(targetEntity: Card::class, mappedBy: 'decks', cascade: ['persist'])]
-        private Collection $cards = new ArrayCollection()
+        private Collection $cards = new ArrayCollection(),
+
+        #[Column(type: Types::STRING, enumType: DeckType::class)]
+        private DeckType   $type = DeckType::DRAFT,
     ) {}
 
     public function getName(): ?string
@@ -49,16 +50,6 @@ class Deck implements DeckInterface
     public function setName(?string $name): void
     {
         $this->name = $name;
-    }
-
-    public function isPublic(): bool
-    {
-        return $this->public;
-    }
-
-    public function setPublic(bool $public): void
-    {
-        $this->public = $public;
     }
 
     public function getWhiteCards(): Collection
@@ -105,5 +96,15 @@ class Deck implements DeckInterface
             $this->cards->removeElement($card);
             $card->removeDeck($this);
         }
+    }
+
+    public function getType(): DeckType
+    {
+        return $this->type;
+    }
+
+    public function setType(DeckType $type): void
+    {
+        $this->type = $type;
     }
 }

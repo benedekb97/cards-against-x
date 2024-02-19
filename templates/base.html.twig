@@ -29,13 +29,14 @@
                 </div>
             </header>
             {% block body %}{% endblock %}
-            <div class="row justify-content-center">
+            <div class="row justify-content-center mt-3">
                 <div class="col-md-12" style="text-align:center;">
-                    <a href="{{ path('disclaimer') }}">Dis<b><i><u>c</u></i></b>laimer</a> | <a target="_blank" href="{{ path('help') }}">{% trans %}base.footer.help{% endtrans %}</a><br>
+                    <a href="{{ path('disclaimer') }}">Disclaimer</a> | <a target="_blank" href="{{ path('help') }}">{% trans %}base.footer.help{% endtrans %}</a><br>
                     <span data-bs-placement="top" data-bs-toggle="tooltip" title="Updated 2023-05-30">Version 1.0</span>
                 </div>
             </div>
         </div>
+        {% block modals %}{% endblock %}
     </body>
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
